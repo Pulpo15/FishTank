@@ -8,7 +8,10 @@ public class FishMovement : MonoBehaviour {
     const int MIN_POSITION = 0;
     #endregion
 
+    public float speed;
     public Transform[] points;
+
+    private Vector3 targetPosition;
 
     private Vector3 GetTargetPosition() {
         Bounds bounds = new Bounds();
@@ -30,10 +33,18 @@ public class FishMovement : MonoBehaviour {
         return targetPosition;
     }
 
-    // Update is called once per frame
-    void Update() {
-        if(Input.GetKeyDown(KeyCode.Return)) {
+    private void Start() {
+        targetPosition = GetTargetPosition();
+    }
 
+    void Update() {
+        if(targetPosition != null) {
+            if(transform.position == targetPosition) targetPosition = GetTargetPosition();
+            else {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition,
+                    speed * Time.deltaTime);
+                transform.LookAt(targetPosition);
+            }
         }
     }
 }
