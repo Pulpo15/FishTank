@@ -22,8 +22,15 @@ public class FishMovement : MonoBehaviour {
     #endregion
 
     private void GetTargetPosition(Vector3? foodPosition) {
+        // *** Get new food position *** //
         if(foodPosition != null) {
             targetPosition = (Vector3)foodPosition;
+            return;
+        }
+        // *** Check if there is food in FishTank *** //
+        GameObject go = GameObject.FindGameObjectWithTag("DefaultFood");
+        if(go != null) {
+            targetPosition = go.transform.position;
             return;
         }
 
@@ -52,8 +59,9 @@ public class FishMovement : MonoBehaviour {
     private void Start() {
         // *** Subscribe events *** //
         GameEvents.instance.onUpdateFishTarget += GetTargetPosition;
-        GameEvents.instance.onSetFoodTarget += SetTargetFood;
+        GameEvents.instance.onFoodInstantiate += SetTargetFood;
 
+        // *** Set fish target at the start *** //
         GameEvents.instance.UpdateFishTarget(null);
     }
 
@@ -78,7 +86,6 @@ public class FishMovement : MonoBehaviour {
         if(other.CompareTag(foodTag)) {
             Destroy(other.gameObject);
             updateTarget = false;
-            GameEvents.instance.foodOnFishtank = false;
             GameEvents.instance.UpdateFishTarget(null);
         }
     }
