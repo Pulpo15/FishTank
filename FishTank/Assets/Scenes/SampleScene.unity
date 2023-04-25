@@ -496,9 +496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1166d7e27d27d4f84fc61b57ff8729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed:
-  - 2
-  - 5
+  minSpeed: 2
+  maxSpeed: 5
   points:
   - {fileID: 324040185}
   - {fileID: 697559750}
@@ -1630,9 +1629,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1166d7e27d27d4f84fc61b57ff8729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed:
-  - 2
-  - 5
+  minSpeed: 2
+  maxSpeed: 5
   points:
   - {fileID: 324040185}
   - {fileID: 697559750}
@@ -1781,9 +1779,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1166d7e27d27d4f84fc61b57ff8729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed:
-  - 2
-  - 5
+  minSpeed: 2
+  maxSpeed: 5
   points:
   - {fileID: 324040185}
   - {fileID: 697559750}
@@ -1995,13 +1992,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf1166d7e27d27d4f84fc61b57ff8729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed:
-  - 2
-  - 5
+  minSpeed: 2
+  maxSpeed: 5
   points:
   - {fileID: 324040185}
   - {fileID: 697559750}
-  foodTag: DefaultFood
+  foodTag: Player
 --- !u!65 &2029413329
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2035,7 +2031,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 031d52f883b021a4cb945cffb8a0be19, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameEvents : MonoBehaviour {
 
     public GameObject fishContainer;
-    private List<GameObject> fishList;
+    private List<FishMovement> fishList;
 
     public static GameEvents instance;
     [HideInInspector]
@@ -19,9 +19,11 @@ public class GameEvents : MonoBehaviour {
     }
 
     private void Start() {
-        foreach (Transform fish in fishContainer.transform) {
-            fishList.Add(fish.gameObject);
+        fishList = new List<FishMovement>();
+        for(int i = 0; i < fishContainer.transform.childCount; i++) {
+            fishList.Add(fishContainer.transform.GetChild(i).GetComponent<FishMovement>());
         }
+        instance.onMessageRecieved += ShowMessage;
     }
 
     // *** Move camera to delimited points *** //
@@ -40,14 +42,16 @@ public class GameEvents : MonoBehaviour {
         if(onFoodMousePressed != null && camPosition == 1 && !moving) {
             onFoodMousePressed(id);
         } else if (camPosition != 1) {
-            MessageRecieved("Camera position is not correct");
+            instance.MessageRecieved("Camera position is not correct");
         }
     }
 
     // *** Message system *** //
     public event Action<string> onMessageRecieved;
     public void MessageRecieved(string message) { 
-        Debug.Log(message);
+        if(onMessageRecieved != null) {
+            onMessageRecieved(message);
+        }
     }
 
     // *** Update fish target when food is in FishTank *** //
@@ -71,5 +75,9 @@ public class GameEvents : MonoBehaviour {
         if (onFoodEaten != null) {
             onFoodEaten();
         }
+    }
+
+    private void ShowMessage(string message) {
+        Debug.Log(message);
     }
 }

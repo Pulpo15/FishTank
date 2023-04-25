@@ -9,7 +9,7 @@ public class FishMovement : MonoBehaviour {
     #endregion
 
     #region Public
-    public float[] speed;
+    public float minSpeed, maxSpeed;
     public Transform[] points;
     public string foodTag;
     #endregion
@@ -22,15 +22,20 @@ public class FishMovement : MonoBehaviour {
     #endregion
 
     private void GetTargetPosition(Vector3? foodPosition) {
+        if(targetPosition != null && updateTarget) {
+            Debug.Log("Xd");
+            return; 
+        }
         // *** Get new food position *** //
         if(foodPosition != null) {
             targetPosition = (Vector3)foodPosition;
             return;
         }
         // *** Check if there is food in FishTank *** //
-        GameObject go = GameObject.FindGameObjectWithTag("DefaultFood");
+        GameObject go = GameObject.FindGameObjectWithTag(foodTag);
         if(go != null) {
-            targetPosition = go.transform.position;
+            //targetPosition = go.transform.position;
+            SetTargetFood(go);
             return;
         }
 
@@ -52,8 +57,10 @@ public class FishMovement : MonoBehaviour {
     }
 
     private void SetTargetFood(GameObject food) {
-        foodTarget = food;
-        updateTarget = true;
+        if(food.tag == foodTag && !updateTarget) {
+            foodTarget = food;
+            updateTarget = true;
+        }
     }
 
     private void Start() {
@@ -67,10 +74,14 @@ public class FishMovement : MonoBehaviour {
 
     void Update() {
         if(targetPosition != null) {
-            if(updateTarget) targetPosition = foodTarget.transform.position;
+            if(updateTarget && foodTarget == null) { 
+                updateTarget = false; 
+                GameEvents.instance.UpdateFishTarget(null); 
+            } else if(updateTarget) targetPosition = foodTarget.transform.position;
+
             // *** If fish has reached it's target get a new one *** //
             if(transform.position == targetPosition) {
-                randomSpeed = Random.Range(speed[0], speed[1]);
+                randomSpeed = Random.Range(minSpeed, maxSpeed);
                 GameEvents.instance.UpdateFishTarget(null);
             }
             // *** If fish has a target move towards it with random speed between assigned in editor *** //
@@ -79,6 +90,9 @@ public class FishMovement : MonoBehaviour {
                     randomSpeed * Time.deltaTime);
                 transform.LookAt(targetPosition);
             }            
+        } else {
+            randomSpeed = Random.Range(minSpeed, maxSpeed);
+            GameEvents.instance.UpdateFishTarget(null);
         }
     }
 

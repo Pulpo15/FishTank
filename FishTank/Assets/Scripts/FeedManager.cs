@@ -15,13 +15,12 @@ public class FeedManager : MonoBehaviour {
         mousePos.z = 15f;
         Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
         objectPos.y = 5f;
-        //Debug.Log(objectPos);
 
         if (objectPos.z > -10f && objectPos.z < 10f && objectPos.x > -5f && objectPos.x < 5f) {
             GameObject go = Instantiate(foodList[type], objectPos, Quaternion.identity);
             GameEvents.instance.FoodInstantiate(go);
         } else {
-            Debug.Log("Error");
+            GameEvents.instance.MessageRecieved("Put food only in the FishTank");
         }
 
     }
