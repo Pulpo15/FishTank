@@ -10,7 +10,7 @@ public class FishMovement : MonoBehaviour {
 
     #region Public
     public float minSpeed, maxSpeed;
-    public Transform[] points;
+    public Transform[] fishTankBounds;
     public string foodTag;
     #endregion
 
@@ -42,8 +42,8 @@ public class FishMovement : MonoBehaviour {
         Bounds bounds = new Bounds();
 
         // *** Get defined vertex of FishTank *** //
-        for(int i = 0; i < points.Length; i++) {
-            bounds.Encapsulate(points[i].position);
+        for(int i = 0; i < fishTankBounds.Length; i++) {
+            bounds.Encapsulate(fishTankBounds[i].position);
         }
 
         // *** Get size of FishTank using defined vertex *** //
@@ -53,7 +53,7 @@ public class FishMovement : MonoBehaviour {
 
         targetPosition = new Vector3(x, y, z);
 
-        Instantiate(points[0], targetPosition, Quaternion.identity);
+        //Instantiate(fishTankBounds[0], targetPosition, Quaternion.identity);
     }
 
     private void SetTargetFood(GameObject food) {
@@ -64,6 +64,12 @@ public class FishMovement : MonoBehaviour {
     }
 
     private void Start() {
+        // *** Check assigned bounds *** //
+        if(fishTankBounds.Length < 2) {
+            Debug.LogWarning("Fish Tank Bounds Unassigned");
+            gameObject.SetActive(false);
+        }
+
         // *** Subscribe events *** //
         GameEvents.instance.onUpdateFishTarget += GetTargetPosition;
         GameEvents.instance.onFoodInstantiate += SetTargetFood;
