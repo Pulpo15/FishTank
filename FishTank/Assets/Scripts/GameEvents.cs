@@ -77,6 +77,21 @@ public class GameEvents : MonoBehaviour {
         }
     }
 
+    // *** Assign fish in BreedManager *** //
+    public event Action<BreedManager.FishType, GameObject> onSearchCouple;
+    public void SearchCouple(BreedManager.FishType fish, GameObject go) { 
+        if (onSearchCouple != null) {
+            onSearchCouple(fish, go);
+        }
+    }
+
+    public event Action<BreedManager.FishType> onBreedNewFish;
+    public void BreedNewFish(BreedManager.FishType fish) {
+        if(onBreedNewFish != null) {
+            onBreedNewFish(fish);
+        }
+    }
+
     private void ShowMessage(string message) {
         Debug.Log(message);
     }
