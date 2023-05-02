@@ -30,22 +30,38 @@ public class BreedManager : MonoBehaviour {
                 // *** Assign iterator to new value so we can modify it *** //
                 BreedFishStructure value = item;
 
-                if(item.male == null) { // Assign male
-                    value.male = fish;
-                } else if(item.female == null) { // Assign female
-                    value.female = fish;
+                if(!fish.GetComponent<FishMovement>().female) {
+                    if(item.male == null) { // Assign male
+                        value.male = fish;
+                    } else if (item.male != null) {
+                        BreedFishStructure maleStruct = new BreedFishStructure();
+                        maleStruct.type = fishType;
+                        maleStruct.male = fish;
+                        breedFish.Add(maleStruct);
+                    }
+                } else if (fish.GetComponent<FishMovement>().female) {
+                    if(item.female == null) { // Assign female
+                        value.female = fish;
+                    } else if(item.female != null) {
+                        BreedFishStructure femaleStruct = new BreedFishStructure();
+                        femaleStruct.type = fishType;
+                        femaleStruct.female = fish;
+                        breedFish.Add(femaleStruct);
+                    }
                 }
 
-                // *** If both go are not null assign each partner *** //
+                // *** If both GameObjects are not, then null assign each partner *** //
                 if (value.male != null && value.female != null) {
                     value.male.GetComponent<FishMovement>().partner = value.female;
                     value.female.GetComponent<FishMovement>().partner = value.male;
 
+                    // *** Reset data *** //
                     breedFish.Remove(item);
 
                     BreedFishStructure empty = new BreedFishStructure();
                     empty.type = fishType;
                     breedFish.Add(empty);
+                    return;
                 }
 
                 breedFish.Remove(item); // Remove old data

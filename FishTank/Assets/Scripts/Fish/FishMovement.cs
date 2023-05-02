@@ -13,6 +13,7 @@ public class FishMovement : MonoBehaviour {
     public string foodTag;
     public float maxEatTime;
     public BreedManager.FishType fishType;
+    public Age age = Age.Adult;
     public bool female = false;
     [HideInInspector]
     public GameObject partner;
@@ -24,12 +25,18 @@ public class FishMovement : MonoBehaviour {
     private float randomSpeed = 2;
     private float eatTime;
     private bool updateTarget;
-    private bool canEat = true;
+    public bool canEat = true;
     private bool canBreed = true;
     private GameObject foodTarget;
-    private BreedManager breedManager;
     private List<Transform> fishTankBounds;
     #endregion
+
+    public enum Age {
+        Child,
+        Teen,
+        Adult,
+        Elder
+    }
 
     private void GetTargetPosition(Vector3? foodPosition) {
         // *** 
@@ -98,9 +105,6 @@ public class FishMovement : MonoBehaviour {
             gameObject.SetActive(false);
         }
 
-        // *** Assign fish Breed Manager *** //
-        breedManager = gameObject.GetComponent<BreedManager>();
-
         // *** Assign time to eat again *** //
         eatTime = maxEatTime;
 
@@ -154,7 +158,9 @@ public class FishMovement : MonoBehaviour {
             updateTarget = false;
             canEat = false;
             GetTargetPosition(null);
-            GameEvents.instance.SearchCouple(fishType, gameObject);
+
+            if (age == Age.Adult) GameEvents.instance.SearchCouple(fishType, gameObject);
+
         } else if(other.gameObject == partner) {
             canBreed = false;
             partner = null;
