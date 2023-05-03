@@ -6,6 +6,7 @@ public class FishMovement : MonoBehaviour {
     #region Macros
     const string BOUNDS_TAG = "FishTankBounds";
     const string FISHTANK_TAG = "FishTank";
+    const int NEXT_AGE = 10;
     #endregion
 
     #region Public
@@ -22,6 +23,7 @@ public class FishMovement : MonoBehaviour {
     #region Private
     private GameObject fishTank;
     private Vector3 targetPosition;
+    private int nextAge = 0;
     private float randomSpeed = 2;
     private float eatTime;
     private bool updateTarget;
@@ -32,7 +34,7 @@ public class FishMovement : MonoBehaviour {
     #endregion
 
     public enum Age {
-        Child,
+        Baby,
         Teen,
         Adult,
         Elder
@@ -143,6 +145,7 @@ public class FishMovement : MonoBehaviour {
             eatTime -= Time.deltaTime;
             if(eatTime <= 0) {
                 canEat = true;
+                canBreed = true;
                 eatTime = maxEatTime;
             }
         }
@@ -153,13 +156,33 @@ public class FishMovement : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
-        if(other.CompareTag(foodTag)) {
+        if(other.CompareTag(foodTag) && canEat) {
             Destroy(other.gameObject);
             updateTarget = false;
             canEat = false;
             GetTargetPosition(null);
 
+            nextAge++;
+
             if (age == Age.Adult) GameEvents.instance.SearchCouple(fishType, gameObject);
+
+            if(nextAge >= NEXT_AGE) {
+                nextAge = 0;
+
+                if (age == Age.Elder) {
+                    gameObject.SetActive(false);
+                    return;
+                }
+
+                System.Array values = System.Enum.GetValues(typeof(Age));
+
+                for(int i = 0; i < values.Length; i++) {
+                    if(age == (Age)values.GetValue(i)) {
+                        age = (Age)values.GetValue(i + 1);
+                        return;
+                    }   
+                }
+            }
 
         } else if(other.gameObject == partner) {
             canBreed = false;

@@ -74,7 +74,6 @@ public class BreedManager : MonoBehaviour {
 
     private void InstantiateNewFish(FishType fishType) {
         for(int i = 0; i < BabyPrefabs.Count; i++) {
-            Debug.Log(BabyPrefabs[i].name + " " + fishType.ToString());
             if(BabyPrefabs[i].name == "Baby" + fishType.ToString()) {
                 Instantiate(BabyPrefabs[i], Vector3.zero, Quaternion.identity);
             }

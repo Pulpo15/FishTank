@@ -113,8 +113,9 @@ MonoBehaviour:
   minSpeed: 2
   maxSpeed: 5
   foodTag: DefaultFood
-  maxEatTime: 100
+  maxEatTime: 10
   fishType: 0
   age: 0
   female: 0
   partner: {fileID: 0}
+  canEat: 1
