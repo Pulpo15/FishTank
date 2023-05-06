@@ -359,6 +359,8 @@
 "Assets/Scripts/Fish/FishMovement.cs"
 "Assets/Scripts/FishTankManager.cs"
 "Assets/Scripts/GameEvents.cs"
+"Assets/Scripts/ObjectPooler/IPooledObject.cs"
+"Assets/Scripts/ObjectPooler/ObjectPooler.cs"
 -langversion:9.0
 
 /deterministic

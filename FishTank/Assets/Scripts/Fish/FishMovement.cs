@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FishMovement : MonoBehaviour {
+public class FishMovement : MonoBehaviour, IPooledObject {
     #region Macros
-    const string BOUNDS_TAG = "FishTankBounds";
-    const string FISHTANK_TAG = "FishTank";
     const int NEXT_AGE = 2;
     #endregion
 
@@ -45,6 +43,10 @@ public class FishMovement : MonoBehaviour {
         DefaultFood,
         Special,
         Big
+    }
+
+    public void OnObjectSpawn() {
+
     }
 
     private void GetTargetPosition(Vector3? foodPosition) {
@@ -89,11 +91,8 @@ public class FishMovement : MonoBehaviour {
     }
 
     private void Start() {
-        // *** Get FishTank *** //
-        fishTank = GameObject.FindGameObjectWithTag(FISHTANK_TAG);
-
         // *** Get FishTank Bounds *** //
-        bounds = GameEvents.instance.GetFishTankBounds();//new List<Transform>();
+        bounds = GameEvents.instance.GetFishTankBounds();
 
         // *** Get Graphics *** //
         GameObject go = gameObject.transform.GetChild(0).gameObject;
@@ -120,7 +119,7 @@ public class FishMovement : MonoBehaviour {
         GetTargetPosition(null);
     }
 
-    void Update() {
+    private void Update() {
         if(targetPosition != null) {
             // *** If fish has eaten get new targetPosition *** //
             if(updateTarget && foodTarget == null) { 
