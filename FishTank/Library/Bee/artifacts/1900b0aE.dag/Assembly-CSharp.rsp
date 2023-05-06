@@ -357,6 +357,7 @@
 "Assets/Scripts/CameraManager.cs"
 "Assets/Scripts/FeedManager.cs"
 "Assets/Scripts/Fish/FishMovement.cs"
+"Assets/Scripts/FishTankManager.cs"
 "Assets/Scripts/GameEvents.cs"
 -langversion:9.0
 

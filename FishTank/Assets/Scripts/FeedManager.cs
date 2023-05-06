@@ -7,16 +7,24 @@ public class FeedManager : MonoBehaviour {
     const int DEFAULT = 0;
     #endregion
 
+    #region Public
     public List<GameObject> foodList;
+    #endregion
+
+    #region Private
+    Bounds bounds;
+    #endregion
 
     // *** Instantiate food at mouse position *** //
     private void FoodInstantiate(int type) {
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 15f;
-        Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos);
-        objectPos.y = 5f;
+        Vector3 objectPos = Camera.main.ScreenToWorldPoint(mousePos); // 
+        objectPos.y = 5f; // FishTank Height
 
-        if (objectPos.z > -10f && objectPos.z < 10f && objectPos.x > -5f && objectPos.x < 5f) {
+        // *** Instantiate food only in FishTank bounds *** //
+        if (objectPos.z > bounds.min.z && objectPos.z < bounds.max.z && 
+            objectPos.x > bounds.min.x && objectPos.x < bounds.max.x) {
             GameObject go = Instantiate(foodList[type], objectPos, Quaternion.identity);
             GameEvents.instance.FoodInstantiate(go);
         } else {
@@ -26,7 +34,11 @@ public class FeedManager : MonoBehaviour {
     }
 
     private void Start() {
+        // *** Subscribe events *** //
         GameEvents.instance.onFoodMousePressed += FoodInstantiate;
+
+        // *** Get FishTank Bounds *** //
+        bounds = GameEvents.instance.GetFishTankBounds();
     }
 
     private void Update() {

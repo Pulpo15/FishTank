@@ -85,11 +85,22 @@ public class GameEvents : MonoBehaviour {
         }
     }
 
+    // *** Instantiate new Fish *** //
     public event Action<BreedManager.FishType, Transform> onBreedNewFish;
     public void BreedNewFish(BreedManager.FishType fish, Transform transform) {
         if(onBreedNewFish != null) {
             onBreedNewFish(fish, transform);
         }
+    }
+
+    // *** Returns selected FishTank bounds *** //
+    public event Func<Bounds> onGetFishTankBounds;
+    public Bounds GetFishTankBounds() { 
+        if (onGetFishTankBounds != null) {
+            return onGetFishTankBounds();
+        }
+        Bounds bounds = new Bounds();
+        return bounds;
     }
 
     private void ShowMessage(string message) {

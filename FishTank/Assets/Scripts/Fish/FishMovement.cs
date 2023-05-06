@@ -22,8 +22,8 @@ public class FishMovement : MonoBehaviour {
 
     #region Private
     private GameObject fishTank;
-    private List<Transform> fishTankBounds;
     private List<GameObject> graphics;
+    private Bounds bounds;
     private Vector3 targetPosition;
     private int nextAge = 0;
     private float randomSpeed = 2;
@@ -66,12 +66,9 @@ public class FishMovement : MonoBehaviour {
             }
         }
 
-        Bounds bounds = new Bounds();
-
-        // *** Get defined vertex of FishTank *** //
-        for(int i = 0; i < fishTankBounds.Count; i++) {
-            bounds.Encapsulate(fishTankBounds[i].position);
-        }
+        //Debug.Log($"Max x: {bounds.max.x}, Min x: {bounds.min.x}");
+        //Debug.Log($"Max y: {bounds.max.y}, Min y: {bounds.min.y}");
+        //Debug.Log($"Max z: {bounds.max.z}, Min z: {bounds.min.z}");
 
         // *** Get size of FishTank using defined vertex *** //
         float x = Random.Range(bounds.min.x, bounds.max.x);
@@ -92,21 +89,13 @@ public class FishMovement : MonoBehaviour {
     }
 
     private void Start() {
-        // *** Set Fish Tank *** //
+        // *** Get FishTank *** //
         fishTank = GameObject.FindGameObjectWithTag(FISHTANK_TAG);
 
-        // *** Set Fish Tank Bounds *** //
-        fishTankBounds = new List<Transform>();
+        // *** Get FishTank Bounds *** //
+        bounds = GameEvents.instance.GetFishTankBounds();//new List<Transform>();
 
-        for(int i = 0; i < fishTank.transform.childCount; i++) {
-            if(fishTank.transform.GetChild(i).tag == BOUNDS_TAG) {
-                for(int x = 0; x < fishTank.transform.GetChild(i).transform.childCount; x++) {
-                    fishTankBounds.Add(fishTank.transform.GetChild(i).transform.GetChild(x));
-                }
-            }
-        }
-
-        // *** Set Graphics *** //
+        // *** Get Graphics *** //
         GameObject go = gameObject.transform.GetChild(0).gameObject;
         graphics = new List<GameObject>();
         for(int i = 0; i < go.transform.childCount; i++) {
@@ -114,9 +103,10 @@ public class FishMovement : MonoBehaviour {
         }
 
         // *** Check assigned bounds *** //
-        if(fishTankBounds.Count < 2) {
+        if(bounds.size == Vector3.zero) {
             Debug.LogWarning("Fish Tank Bounds Unassigned : " + gameObject.name);
             gameObject.SetActive(false);
+            return;
         }
 
         // *** Assign time to eat again *** //
