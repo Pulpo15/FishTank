@@ -9,6 +9,8 @@ TagManager:
   - DefaultFish
   - DefaultFood
   - FishTank
+  - FishContainer
+  - Flat
   layers:
   - Default
   - TransparentFX

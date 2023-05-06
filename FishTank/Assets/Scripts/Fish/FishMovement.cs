@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +5,7 @@ public class FishMovement : MonoBehaviour {
     #region Macros
     const string BOUNDS_TAG = "FishTankBounds";
     const string FISHTANK_TAG = "FishTank";
-    const int NEXT_AGE = 10;
+    const int NEXT_AGE = 2;
     #endregion
 
     #region Public
@@ -15,6 +14,7 @@ public class FishMovement : MonoBehaviour {
     public float maxEatTime;
     public BreedManager.FishType fishType;
     public Age age = Age.Adult;
+    public Food food = Food.DefaultFood;
     public bool female = false;
     [HideInInspector]
     public GameObject partner;
@@ -22,15 +22,16 @@ public class FishMovement : MonoBehaviour {
 
     #region Private
     private GameObject fishTank;
+    private List<Transform> fishTankBounds;
+    private List<GameObject> graphics;
     private Vector3 targetPosition;
     private int nextAge = 0;
     private float randomSpeed = 2;
     private float eatTime;
     private bool updateTarget;
-    public bool canEat = true;
+    private bool canEat = true;
     private bool canBreed = true;
     private GameObject foodTarget;
-    private List<Transform> fishTankBounds;
     #endregion
 
     public enum Age {
@@ -40,10 +41,15 @@ public class FishMovement : MonoBehaviour {
         Elder
     }
 
+    public enum Food {
+        DefaultFood,
+        Special,
+        Big
+    }
+
     private void GetTargetPosition(Vector3? foodPosition) {
         // *** 
         if(targetPosition != null && updateTarget) {
-            //Debug.Log("Test");
             return;
         }
         // *** Get new food position *** //
@@ -55,7 +61,6 @@ public class FishMovement : MonoBehaviour {
         if(canEat) {
             GameObject go = GameObject.FindGameObjectWithTag(foodTag);
             if(go != null) {
-                //targetPosition = go.transform.position;
                 SetTargetFood(go);
                 return;
             }
@@ -87,10 +92,10 @@ public class FishMovement : MonoBehaviour {
     }
 
     private void Start() {
-        // *** Assign Fish Tank *** //
+        // *** Set Fish Tank *** //
         fishTank = GameObject.FindGameObjectWithTag(FISHTANK_TAG);
 
-        // *** Assign Fish Tank Bounds *** //
+        // *** Set Fish Tank Bounds *** //
         fishTankBounds = new List<Transform>();
 
         for(int i = 0; i < fishTank.transform.childCount; i++) {
@@ -99,6 +104,13 @@ public class FishMovement : MonoBehaviour {
                     fishTankBounds.Add(fishTank.transform.GetChild(i).transform.GetChild(x));
                 }
             }
+        }
+
+        // *** Set Graphics *** //
+        GameObject go = gameObject.transform.GetChild(0).gameObject;
+        graphics = new List<GameObject>();
+        for(int i = 0; i < go.transform.childCount; i++) {
+            graphics.Add(go.transform.GetChild(i).gameObject);
         }
 
         // *** Check assigned bounds *** //
@@ -120,10 +132,13 @@ public class FishMovement : MonoBehaviour {
 
     void Update() {
         if(targetPosition != null) {
+            // *** If fish has eaten get new targetPosition *** //
             if(updateTarget && foodTarget == null) { 
                 updateTarget = false;
                 GetTargetPosition(null); 
-            } else if(updateTarget) targetPosition = foodTarget.transform.position;
+            } 
+            // *** If fish has not eaten follow food *** //
+            else if(updateTarget) targetPosition = foodTarget.transform.position;
 
             // *** If fish has reached it's target get a new one *** //
             if(transform.position == targetPosition) {
@@ -136,11 +151,12 @@ public class FishMovement : MonoBehaviour {
                     randomSpeed * Time.deltaTime);
                 transform.LookAt(targetPosition);
             }            
-        } else {
+        } else { // *** targetPosition is null so assign it again *** //
             randomSpeed = Random.Range(minSpeed, maxSpeed);
             GetTargetPosition(null);
         }
 
+        // *** Timer to eat again *** //
         if(!canEat) {
             eatTime -= Time.deltaTime;
             if(eatTime <= 0) {
@@ -149,46 +165,55 @@ public class FishMovement : MonoBehaviour {
                 eatTime = maxEatTime;
             }
         }
-
+        // *** Set Target Position to Parter to breed *** //
         if(partner != null && canBreed) {
             GetTargetPosition(partner.transform.position);
         }
     }
 
     private void OnTriggerEnter(Collider other) {
+        // *** Collision with Food *** //
         if(other.CompareTag(foodTag) && canEat) {
             Destroy(other.gameObject);
             updateTarget = false;
             canEat = false;
             GetTargetPosition(null);
 
-            nextAge++;
+            nextAge++; // Var to grow
 
-            if (age == Age.Adult) GameEvents.instance.SearchCouple(fishType, gameObject);
-
+            // *** Grow fish *** //
             if(nextAge >= NEXT_AGE) {
                 nextAge = 0;
 
+                // *** If elder DIE *** //
                 if (age == Age.Elder) {
                     gameObject.SetActive(false);
                     return;
                 }
 
+                // *** Get size of Enum(Age) to iterate and set next Age *** //
                 System.Array values = System.Enum.GetValues(typeof(Age));
 
                 for(int i = 0; i < values.Length; i++) {
                     if(age == (Age)values.GetValue(i)) {
-                        age = (Age)values.GetValue(i + 1);
+                        age = (Age)values.GetValue(i + 1); // Set next Age
+
+                        graphics[i].SetActive(false); // Disable young graphic
+                        graphics[i + 1].SetActive(true); // Enable next graphic
                         return;
                     }   
                 }
             }
 
-        } else if(other.gameObject == partner) {
+            // *** If Adult search add fish to couple *** //
+            if(age == Age.Adult) GameEvents.instance.SearchCouple(fishType, gameObject);
+        } 
+        // *** Collision with partner *** //
+        if(other.gameObject == partner) {
             canBreed = false;
             partner = null;
-
-            if (female) GameEvents.instance.BreedNewFish(fishType);
+            // *** If female Breed new Fish *** //
+            if (female) GameEvents.instance.BreedNewFish(fishType, transform);
         }
     }
 }

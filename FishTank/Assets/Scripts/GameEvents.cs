@@ -85,10 +85,10 @@ public class GameEvents : MonoBehaviour {
         }
     }
 
-    public event Action<BreedManager.FishType> onBreedNewFish;
-    public void BreedNewFish(BreedManager.FishType fish) {
+    public event Action<BreedManager.FishType, Transform> onBreedNewFish;
+    public void BreedNewFish(BreedManager.FishType fish, Transform transform) {
         if(onBreedNewFish != null) {
-            onBreedNewFish(fish);
+            onBreedNewFish(fish, transform);
         }
     }
 

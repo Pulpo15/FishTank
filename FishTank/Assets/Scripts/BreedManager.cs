@@ -4,8 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BreedManager : MonoBehaviour {
+    #region Macros
+    const string FISHCONTAINER_TAG = "FishContainer";
+    #endregion
 
+    #region Public
     public List<GameObject> BabyPrefabs;
+    #endregion
+
+    #region Private
+    private GameObject fishContainer;
+    #endregion
 
     public enum FishType {
         Default,
@@ -30,10 +39,12 @@ public class BreedManager : MonoBehaviour {
                 // *** Assign iterator to new value so we can modify it *** //
                 BreedFishStructure value = item;
 
+                if(item.male == fish || item.female == fish) return; // If fish already in couple return;
+
                 if(!fish.GetComponent<FishMovement>().female) {
                     if(item.male == null) { // Assign male
                         value.male = fish;
-                    } else if (item.male != null) {
+                    } else if (item.male != null) { // Current male couple is assigned, create new one //
                         BreedFishStructure maleStruct = new BreedFishStructure();
                         maleStruct.type = fishType;
                         maleStruct.male = fish;
@@ -42,7 +53,7 @@ public class BreedManager : MonoBehaviour {
                 } else if (fish.GetComponent<FishMovement>().female) {
                     if(item.female == null) { // Assign female
                         value.female = fish;
-                    } else if(item.female != null) {
+                    } else if(item.female != null) { // Current female couple is assigned, create new one //
                         BreedFishStructure femaleStruct = new BreedFishStructure();
                         femaleStruct.type = fishType;
                         femaleStruct.female = fish;
@@ -50,8 +61,8 @@ public class BreedManager : MonoBehaviour {
                     }
                 }
 
-                // *** If both GameObjects are not, then null assign each partner *** //
-                if (value.male != null && value.female != null) {
+                // *** If both GameObjects are not null, then assign each partner *** //
+                if(value.male != null && value.female != null) {
                     value.male.GetComponent<FishMovement>().partner = value.female;
                     value.female.GetComponent<FishMovement>().partner = value.male;
 
@@ -72,10 +83,17 @@ public class BreedManager : MonoBehaviour {
         }
     }
 
-    private void InstantiateNewFish(FishType fishType) {
+    private void InstantiateNewFish(FishType fishType, Transform transform) {
         for(int i = 0; i < BabyPrefabs.Count; i++) {
-            if(BabyPrefabs[i].name == "Baby" + fishType.ToString()) {
-                Instantiate(BabyPrefabs[i], Vector3.zero, Quaternion.identity);
+            if(BabyPrefabs[i].name == fishType.ToString()) {
+                GameObject newFish = Instantiate(BabyPrefabs[i], transform.position, Quaternion.identity, fishContainer.transform);
+
+                FishMovement fishMovement = newFish.GetComponent<FishMovement>();
+
+                int randNum = UnityEngine.Random.Range(0, 1); // Random int to set sex
+
+                if(randNum == 1) fishMovement.female = false;
+                else if (randNum == 0) fishMovement.female = true;
             }
         }
     }
@@ -84,6 +102,9 @@ public class BreedManager : MonoBehaviour {
         // *** Subscribe events *** //
         GameEvents.instance.onSearchCouple += AssignCouple;
         GameEvents.instance.onBreedNewFish += InstantiateNewFish;
+
+        // *** Set Fish Container *** //
+        fishContainer = GameObject.FindGameObjectWithTag(FISHCONTAINER_TAG);
 
         // *** Create fish couple list with size of enum *** //
         Array values = Enum.GetValues(typeof(FishType));
