@@ -3,16 +3,15 @@ using UnityEngine;
 
 public class FishMovement : MonoBehaviour, IPooledObject {
     #region Macros
-    const int NEXT_AGE = 100;
+    const int NEXT_AGE = 3;
     #endregion
 
     #region Public
     public float minSpeed, maxSpeed;
-    public string foodTag;
     public float maxEatTime;
     public BreedManager.FishType fishType;
     public Age age = Age.Adult;
-    public Food food = Food.DefaultFood;
+    public FeedManager.Food food = FeedManager.Food.DefaultFood;
     public bool female = false;
     [HideInInspector]
     public GameObject partner;
@@ -38,13 +37,16 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         Elder
     }
 
-    public enum Food {
-        DefaultFood,
-        Special,
-        Big
-    }
-
     public void OnObjectSpawn() {
+        if(graphics == null) {
+            // *** Get Graphics *** //
+            GameObject go = gameObject.transform.GetChild(0).gameObject;
+            graphics = new List<GameObject>();
+            for(int i = 0; i < go.transform.childCount; i++) {
+                graphics.Add(go.transform.GetChild(i).gameObject);
+            }
+        }
+
         // *** Assign time to eat again *** //
         eatTime = maxEatTime;
 
@@ -56,13 +58,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     public void SetAge(Age _age) { 
         age = _age;
 
-        // *** Get Graphics *** //
-        GameObject go = gameObject.transform.GetChild(0).gameObject;
-        graphics = new List<GameObject>();
-        for(int i = 0; i < go.transform.childCount; i++) {
-            graphics.Add(go.transform.GetChild(i).gameObject);
-        }
-
         // *** Get size of Enum(Age) to iterate and set next Age *** //
         System.Array values = System.Enum.GetValues(typeof(Age));
 
@@ -72,10 +67,15 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
         for(int i = 0; i < values.Length; i++) {
             if(age == (Age)values.GetValue(i)) {
-                graphics[i + 1].SetActive(true); // Enable next graphic
+                graphics[i].SetActive(true); // Enable next graphic
                 return;
             }
         }
+    }
+
+    private Transform GetClosestFood() {
+
+        return null;
     }
 
     private void GetTargetPosition(Vector3? foodPosition) {
@@ -90,16 +90,18 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         }
         // *** Check if there is food in FishTank *** //
         if(canEat) {
-            GameObject go = GameObject.FindGameObjectWithTag(foodTag);
+            GameObject go = GameObject.Find(food.ToString());
             if(go != null) {
                 SetTargetFood(go);
                 return;
             }
         }
 
+        #region Debug bounds
         //Debug.Log($"Max x: {bounds.max.x}, Min x: {bounds.min.x}");
         //Debug.Log($"Max y: {bounds.max.y}, Min y: {bounds.min.y}");
         //Debug.Log($"Max z: {bounds.max.z}, Min z: {bounds.min.z}");
+        #endregion
 
         // *** Get size of FishTank using defined vertex *** //
         float x = Random.Range(bounds.min.x, bounds.max.x);
@@ -112,9 +114,9 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     // *** If food is correct & can breed set target *** //
-    private void SetTargetFood(GameObject food) {
-        if(food.tag == foodTag && !updateTarget && canEat) {
-            foodTarget = food;
+    private void SetTargetFood(GameObject _food) {
+        if(_food.name == food.ToString() && !updateTarget && canEat) {
+            foodTarget = _food;
             updateTarget = true;
         }
     }
@@ -174,7 +176,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
             }
         }
         // *** Set Target Position to Parter to breed *** //
-        if(partner != null && canBreed) {
+        if(partner != null && canBreed && partner.activeSelf) {
             GetTargetPosition(partner.transform.position);
         }
     }

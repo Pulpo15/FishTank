@@ -8,7 +8,6 @@ public class BreedManager : MonoBehaviour {
     #endregion
 
     #region Public
-    public List<GameObject> BabyPrefabs;
     #endregion
 
     #region Private
@@ -87,8 +86,6 @@ public class BreedManager : MonoBehaviour {
         FishMovement fishMovement = newFish.GetComponent<FishMovement>();
 
         int randNum = UnityEngine.Random.Range(0, 2); // Random int to set sex
-
-        Debug.Log(randNum);
 
         if(randNum == 1) fishMovement.female = false;
         else if(randNum == 0) fishMovement.female = true;

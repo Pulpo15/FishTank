@@ -27,11 +27,12 @@ public class ObjectPooler : MonoBehaviour {
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
             GameObject parent = new GameObject();
-            parent.name = pool.tag;
+            parent.name = $"{pool.tag} Parent";
             parent.transform.parent = gameObject.transform;
 
             for(int i = 0; i < pool.size; i++) {
                 GameObject obj = Instantiate(pool.prefab, parent.transform);
+                obj.name = obj.name.Replace("(Clone)", "");
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
             }

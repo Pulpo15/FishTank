@@ -263,10 +263,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minSpeed: 2
   maxSpeed: 5
-  foodTag: DefaultFood
-  maxEatTime: 10
+  maxEatTime: 3
   fishType: 0
   age: 0
+  food: 1
   female: 0
   partner: {fileID: 0}
 --- !u!54 &1391434900275712553
