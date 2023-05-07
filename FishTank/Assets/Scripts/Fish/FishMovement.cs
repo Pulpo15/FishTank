@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FishMovement : MonoBehaviour, IPooledObject {
     #region Macros
-    const int NEXT_AGE = 2;
+    const int NEXT_AGE = 100;
     #endregion
 
     #region Public
@@ -19,7 +19,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     #endregion
 
     #region Private
-    private GameObject fishTank;
     private List<GameObject> graphics;
     private Bounds bounds;
     private Vector3 targetPosition;
@@ -46,7 +45,37 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     public void OnObjectSpawn() {
+        // *** Assign time to eat again *** //
+        eatTime = maxEatTime;
 
+        // *** Set fish target at the start *** //
+        GetTargetPosition(null);
+    }
+
+    // *** Set designed age and it's graphics *** //
+    public void SetAge(Age _age) { 
+        age = _age;
+
+        // *** Get Graphics *** //
+        GameObject go = gameObject.transform.GetChild(0).gameObject;
+        graphics = new List<GameObject>();
+        for(int i = 0; i < go.transform.childCount; i++) {
+            graphics.Add(go.transform.GetChild(i).gameObject);
+        }
+
+        // *** Get size of Enum(Age) to iterate and set next Age *** //
+        System.Array values = System.Enum.GetValues(typeof(Age));
+
+        for(int i = 0; i < values.Length; i++) {
+            graphics[i].SetActive(false); // Disable young graphic
+        }
+
+        for(int i = 0; i < values.Length; i++) {
+            if(age == (Age)values.GetValue(i)) {
+                graphics[i + 1].SetActive(true); // Enable next graphic
+                return;
+            }
+        }
     }
 
     private void GetTargetPosition(Vector3? foodPosition) {
@@ -94,13 +123,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         // *** Get FishTank Bounds *** //
         bounds = GameEvents.instance.GetFishTankBounds();
 
-        // *** Get Graphics *** //
-        GameObject go = gameObject.transform.GetChild(0).gameObject;
-        graphics = new List<GameObject>();
-        for(int i = 0; i < go.transform.childCount; i++) {
-            graphics.Add(go.transform.GetChild(i).gameObject);
-        }
-
         // *** Check assigned bounds *** //
         if(bounds.size == Vector3.zero) {
             Debug.LogWarning("Fish Tank Bounds Unassigned : " + gameObject.name);
@@ -108,21 +130,18 @@ public class FishMovement : MonoBehaviour, IPooledObject {
             return;
         }
 
-        // *** Assign time to eat again *** //
-        eatTime = maxEatTime;
-
         // *** Subscribe events *** //
         GameEvents.instance.onUpdateFishTarget += GetTargetPosition;
         GameEvents.instance.onFoodInstantiate += SetTargetFood;
 
-        // *** Set fish target at the start *** //
-        GetTargetPosition(null);
+        OnObjectSpawn();
+
     }
 
     private void Update() {
         if(targetPosition != null) {
             // *** If fish has eaten get new targetPosition *** //
-            if(updateTarget && foodTarget == null) { 
+            if(updateTarget && !foodTarget.activeSelf) { 
                 updateTarget = false;
                 GetTargetPosition(null); 
             } 
@@ -162,8 +181,8 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
     private void OnTriggerEnter(Collider other) {
         // *** Collision with Food *** //
-        if(other.CompareTag(foodTag) && canEat) {
-            Destroy(other.gameObject);
+        if(other.gameObject == foodTarget && canEat) {
+            other.gameObject.SetActive(false);
             updateTarget = false;
             canEat = false;
             GetTargetPosition(null);

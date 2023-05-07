@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class BreedManager : MonoBehaviour {
     #region Macros
-    const string FISHCONTAINER_TAG = "FishContainer";
     #endregion
 
     #region Public
@@ -13,11 +12,10 @@ public class BreedManager : MonoBehaviour {
     #endregion
 
     #region Private
-    private GameObject fishContainer;
     #endregion
 
     public enum FishType {
-        Default,
+        BlueTang,
         Clown
     }
 
@@ -84,27 +82,22 @@ public class BreedManager : MonoBehaviour {
     }
 
     private void InstantiateNewFish(FishType fishType, Transform transform) {
-        for(int i = 0; i < BabyPrefabs.Count; i++) {
-            if(BabyPrefabs[i].name == fishType.ToString()) {
-                GameObject newFish = Instantiate(BabyPrefabs[i], transform.position, Quaternion.identity, fishContainer.transform);
+        GameObject newFish = ObjectPooler.instance.SpawnFromPool(fishType.ToString(), transform.position, Quaternion.identity);
 
-                FishMovement fishMovement = newFish.GetComponent<FishMovement>();
+        FishMovement fishMovement = newFish.GetComponent<FishMovement>();
 
-                int randNum = UnityEngine.Random.Range(0, 1); // Random int to set sex
+        int randNum = UnityEngine.Random.Range(0, 2); // Random int to set sex
 
-                if(randNum == 1) fishMovement.female = false;
-                else if (randNum == 0) fishMovement.female = true;
-            }
-        }
+        Debug.Log(randNum);
+
+        if(randNum == 1) fishMovement.female = false;
+        else if(randNum == 0) fishMovement.female = true;
     }
 
     private void Start() {
         // *** Subscribe events *** //
         GameEvents.instance.onSearchCouple += AssignCouple;
         GameEvents.instance.onBreedNewFish += InstantiateNewFish;
-
-        // *** Set Fish Container *** //
-        fishContainer = GameObject.FindGameObjectWithTag(FISHCONTAINER_TAG);
 
         // *** Create fish couple list with size of enum *** //
         Array values = Enum.GetValues(typeof(FishType));

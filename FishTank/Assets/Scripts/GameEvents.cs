@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class GameEvents : MonoBehaviour {
 
-    public GameObject fishContainer;
-    private List<FishMovement> fishList;
-
     public static GameEvents instance;
     [HideInInspector]
     public bool moving;
@@ -19,10 +16,6 @@ public class GameEvents : MonoBehaviour {
     }
 
     private void Start() {
-        fishList = new List<FishMovement>();
-        for(int i = 0; i < fishContainer.transform.childCount; i++) {
-            fishList.Add(fishContainer.transform.GetChild(i).GetComponent<FishMovement>());
-        }
         instance.onMessageRecieved += ShowMessage;
     }
 
@@ -33,16 +26,6 @@ public class GameEvents : MonoBehaviour {
             moving = true;
             camPosition = id;
             onCamKeyPressed(id);
-        }
-    }
-
-    // *** Instantiate food at mouse position *** //
-    public event Action<int> onFoodMousePressed;
-    public void FoodMousePressed(int id) {
-        if(onFoodMousePressed != null && camPosition == 1 && !moving) {
-            onFoodMousePressed(id);
-        } else if (camPosition != 1) {
-            instance.MessageRecieved("Camera position is not correct");
         }
     }
 
@@ -62,7 +45,7 @@ public class GameEvents : MonoBehaviour {
         }
     }
 
-    // 
+    // *** When Food instantiated assign food to target *** //
     public event Action<GameObject> onFoodInstantiate;
     public void FoodInstantiate(GameObject foodTarget) {
         if(onUpdateFishTarget != null) {

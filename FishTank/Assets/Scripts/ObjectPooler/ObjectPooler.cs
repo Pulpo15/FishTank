@@ -13,6 +13,11 @@ public class ObjectPooler : MonoBehaviour {
 
     public List<Pool> pools;
     public Dictionary<string, Queue<GameObject>> poolDictionary;
+    public static ObjectPooler instance;
+
+    private void Awake() {
+        instance = this;
+    }
 
     private void Start() {
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
@@ -21,8 +26,9 @@ public class ObjectPooler : MonoBehaviour {
         foreach(Pool pool in pools) {
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
-            GameObject parent = Instantiate(new GameObject(), gameObject.transform);
+            GameObject parent = new GameObject();
             parent.name = pool.tag;
+            parent.transform.parent = gameObject.transform;
 
             for(int i = 0; i < pool.size; i++) {
                 GameObject obj = Instantiate(pool.prefab, parent.transform);
@@ -38,7 +44,7 @@ public class ObjectPooler : MonoBehaviour {
     public GameObject SpawnFromPool (string tag, Vector3 position, Quaternion rotation) {
 
         if(!poolDictionary.ContainsKey(tag)) {
-            Debug.Log($"Pool with tag {tag} doesn't excist.");
+            Debug.LogWarning($"Pool with tag {tag} doesn't excist.");
             return null;
         }
 

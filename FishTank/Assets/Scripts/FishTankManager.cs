@@ -35,4 +35,16 @@ public class FishTankManager : MonoBehaviour {
         // *** Subscribe events *** //
         GameEvents.instance.onGetFishTankBounds += GetFishTankBounds;
     }
+
+    private void Update() {
+        if(Input.GetMouseButtonDown(4)) {
+            GameObject obj = ObjectPooler.instance.SpawnFromPool("BlueTang", transform.position, transform.rotation);
+            obj.GetComponent<FishMovement>().SetAge(FishMovement.Age.Adult);
+        }
+        if(Input.GetMouseButtonDown(3)) {
+            GameObject obj = ObjectPooler.instance.SpawnFromPool("BlueTang", transform.position, transform.rotation);
+            obj.GetComponent<FishMovement>().SetAge(FishMovement.Age.Adult);
+            obj.GetComponent<FishMovement>().female = true;
+        }
+    }
 }
