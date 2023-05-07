@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FishMovement : MonoBehaviour, IPooledObject {
     #region Macros
-    const int NEXT_AGE = 3;
+    const int NEXT_AGE = 10;
     #endregion
 
     #region Public
