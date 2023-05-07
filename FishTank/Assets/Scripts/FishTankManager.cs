@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,34 @@ public class FishTankManager : MonoBehaviour {
     #region Macros
     const string BOUNDS_TAG = "FishTankBounds";
     #endregion
+
+    #region Public
+    #endregion
+
+    #region Private
+    private BreedManager.FishType fishType;
+    private int fishId = 0;
+    private int enumSize;
+    #endregion
+
+    // *** Change selected food type *** //
+    private void ModifyFoodType(int id) {
+        // *** Get size of enum *** //
+        Array values = Enum.GetValues(typeof(BreedManager.FishType));
+
+        for(int i = 0; i < values.Length; i++) {
+            if(id == i) {
+                fishType = (BreedManager.FishType)values.GetValue(i);
+            }
+        }
+    }
+
+    // *** Prefactored Spawn Fish *** //
+    private void SpawnNewFish(string tag, bool female) {
+        GameObject obj = ObjectPooler.instance.SpawnFromPool(fishType.ToString(), transform.position, transform.rotation);
+        obj.GetComponent<FishMovement>().SetAge(FishMovement.Age.Adult);
+        obj.GetComponent<FishMovement>().female = female;
+    }
 
     // *** Returns Bounds of FishTank *** //
     private Bounds GetFishTankBounds() {
@@ -34,17 +63,30 @@ public class FishTankManager : MonoBehaviour {
     private void Start() {
         // *** Subscribe events *** //
         GameEvents.instance.onGetFishTankBounds += GetFishTankBounds;
+
+        // *** Get size of enum *** //
+        Array values = Enum.GetValues(typeof(BreedManager.FishType));
+        enumSize = values.Length - 1;
     }
 
     private void Update() {
-        if(Input.GetMouseButtonDown(4)) {
-            GameObject obj = ObjectPooler.instance.SpawnFromPool("BlueTang", transform.position, transform.rotation);
-            obj.GetComponent<FishMovement>().SetAge(FishMovement.Age.Adult);
+        // *** Change selected fish type *** //
+        if(Input.GetMouseButtonDown(4) && fishId < enumSize) {
+            fishId++;
+            ModifyFoodType(fishId);
         }
-        if(Input.GetMouseButtonDown(3)) {
-            GameObject obj = ObjectPooler.instance.SpawnFromPool("BlueTang", transform.position, transform.rotation);
-            obj.GetComponent<FishMovement>().SetAge(FishMovement.Age.Adult);
-            obj.GetComponent<FishMovement>().female = true;
+        if(Input.GetMouseButtonDown(3) && fishId > 0) {
+            fishId--;
+            ModifyFoodType(fishId);
         }
+
+        // *** Spawn selected fish *** //
+        if(Input.GetMouseButtonDown(0) && GameEvents.instance.camPosition == 0) {
+            SpawnNewFish(fishType.ToString(), false);
+        } else if(Input.GetMouseButtonDown(1) && GameEvents.instance.camPosition == 0) {
+            SpawnNewFish(fishType.ToString(), true);
+        }
+
+
     }
 }

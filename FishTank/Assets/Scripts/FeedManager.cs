@@ -59,7 +59,7 @@ public class FeedManager : MonoBehaviour {
 
         // *** Get size of enum *** //
         Array values = Enum.GetValues(typeof(Food));
-        enumSize = values.Length;
+        enumSize = values.Length - 1;
     }
 
     private void Update() {

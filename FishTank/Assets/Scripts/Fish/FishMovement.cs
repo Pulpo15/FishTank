@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class FishMovement : MonoBehaviour, IPooledObject {
@@ -73,16 +74,26 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         }
     }
 
+    // *** Search closest food to fish *** //
     private Transform GetClosestFood() {
+        var objects = Resources.FindObjectsOfTypeAll<GameObject>().Where(obj => obj.name == food.ToString());
 
-        return null;
+        Transform tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach(var t in objects) {
+            if(t.activeInHierarchy) {
+                float dist = Vector3.Distance(t.transform.position, currentPos);
+                if(dist < minDist) {
+                    tMin = t.transform;
+                    minDist = dist;
+                }
+            }
+        }
+        return tMin;
     }
 
     private void GetTargetPosition(Vector3? foodPosition) {
-        // *** 
-        if(targetPosition != null && updateTarget) {
-            return;
-        }
         // *** Get new food position *** //
         if(foodPosition != null) {
             targetPosition = (Vector3)foodPosition;
@@ -90,9 +101,9 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         }
         // *** Check if there is food in FishTank *** //
         if(canEat) {
-            GameObject go = GameObject.Find(food.ToString());
-            if(go != null) {
-                SetTargetFood(go);
+            Transform obj = GetClosestFood();
+            if (obj != null) {
+                SetTargetFood(obj.gameObject);
                 return;
             }
         }
