@@ -68,7 +68,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
         for(int i = 0; i < values.Length; i++) {
             if(age == (Age)values.GetValue(i)) {
-                graphics[i].SetActive(true); // Enable next graphic
+                //graphics[i].SetActive(true); // Enable next graphic
                 return;
             }
         }

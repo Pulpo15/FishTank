@@ -54,9 +54,9 @@ MonoBehaviour:
   - tag: Big
     prefab: {fileID: 7124003312222619923, guid: 95c0b7e1135bbbc459a435fc31d8dde5, type: 3}
     size: 50
-  - tag: BlueTang
+  - tag: Piranha
     prefab: {fileID: 5905104734095047765, guid: c28fa2f3c52764644a282948045e36e0, type: 3}
-    size: 5
+    size: 30
   - tag: Clown
     prefab: {fileID: 5905104734095047765, guid: a37abcfc3d929f5459e01598280a2d55, type: 3}
-    size: 5
+    size: 30

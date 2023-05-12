@@ -14,7 +14,7 @@ public class BreedManager : MonoBehaviour {
     #endregion
 
     public enum FishType {
-        BlueTang,
+        Piranha,
         Clown
     }
 
