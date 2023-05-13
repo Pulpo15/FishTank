@@ -29,7 +29,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     private float eatTime;
     private float deadTime;
     private bool updateTarget;
-    private bool canEat = true;
+    private bool canEat = false;
     private bool canBreed = true;
     private GameObject foodTarget;
     private bool dead = false;

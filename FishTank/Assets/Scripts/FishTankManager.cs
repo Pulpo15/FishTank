@@ -81,9 +81,9 @@ public class FishTankManager : MonoBehaviour {
         }
 
         // *** Spawn selected fish *** //
-        if(Input.GetMouseButtonDown(0) && GameEvents.instance.camPosition == 0) {
+        if(Input.GetKeyDown(KeyCode.RightShift)) {
             SpawnNewFish(fishType.ToString(), false);
-        } else if(Input.GetMouseButtonDown(1) && GameEvents.instance.camPosition == 0) {
+        } else if(Input.GetKeyDown(KeyCode.RightControl)) {
             SpawnNewFish(fishType.ToString(), true);
         }
 

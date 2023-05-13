@@ -8,6 +8,7 @@ public class CameraManager : MonoBehaviour {
     #endregion
 
     public GameObject fishTank;
+    public float speedH = 2.0f;
 
     private List<Transform> camPosition;
 
@@ -58,12 +59,47 @@ public class CameraManager : MonoBehaviour {
     }
 
     private void Update() {
+        // *** Switch cameras *** //
         if(Input.GetKeyDown(KeyCode.Alpha1)) {
             GameEvents.instance.CamKeyPressed(0);
         } else if(Input.GetKeyDown(KeyCode.Alpha2)) {
             GameEvents.instance.CamKeyPressed(1);
         } else if(Input.GetKeyDown(KeyCode.Alpha3)) {
             GameEvents.instance.CamKeyPressed(2);
+        }
+
+        // *** Rotate camera using right click *** //
+        if(Input.GetMouseButton(1)) {
+            // *** Assign position to mouse axis *** //
+            float posY = Input.GetAxis("Mouse X");
+            float posZ = Input.GetAxis("Mouse Y");
+
+            // *** Lock mouse *** //
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            // *** Rotate *** //
+            transform.RotateAround(fishTank.transform.position, new Vector3(0.0f, posY, posZ * -1), 80 * Time.deltaTime * speedH);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0.0f);
+
+        } else if(Input.GetMouseButton(0)) {
+            // *** Assign position to mouse axis *** //
+            float posZ = Input.GetAxis("Mouse X") * speedH * Time.deltaTime * 80f * -1;
+            float posY = Input.GetAxis("Mouse Y") * speedH * Time.deltaTime * 80f * -1;
+
+            transform.position = new Vector3(transform.position.x, transform.position.y + posY, transform.position.z + +posZ);
+
+        } else {
+            // *** Unlock mouse *** //
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        } 
+
+        // *** Zoom OUT/IN *** //
+        if(Input.GetAxisRaw("Mouse ScrollWheel") > 0) {
+            transform.position += transform.forward * Time.deltaTime * speedH * 100;
+        } else if(Input.GetAxisRaw("Mouse ScrollWheel") < 0) {
+            transform.position -= transform.forward * Time.deltaTime * speedH * 100;
         }
     }
 }
