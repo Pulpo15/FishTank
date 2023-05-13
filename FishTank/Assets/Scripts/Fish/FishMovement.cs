@@ -8,6 +8,8 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
     #region Public
     public Animator animator;
+    public List<Material> material;
+    public GameObject mesh;
     public float minSpeed, maxSpeed;
     public float maxEatTime;
     public float maxDeadTime = 30;
@@ -21,7 +23,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     #endregion
 
     #region Private
-    private List<GameObject> graphics;
     private Bounds bounds;
     private Vector3 targetPosition;
     private int nextAge = 0;
@@ -43,15 +44,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     public void OnObjectSpawn() {
-        if(graphics == null) {
-            // *** Get Graphics *** //
-            GameObject go = gameObject.transform.GetChild(0).gameObject;
-            graphics = new List<GameObject>();
-            for(int i = 0; i < go.transform.childCount; i++) {
-                graphics.Add(go.transform.GetChild(i).gameObject);
-            }
-        }
-
         // *** Assign time to eat again *** //
         eatTime = maxEatTime;
 
@@ -71,20 +63,8 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     // *** Set designed age and it's graphics *** //
     public void SetAge(Age _age) { 
         age = _age;
-
-        // *** Get size of Enum(Age) to iterate and set next Age *** //
-        System.Array values = System.Enum.GetValues(typeof(Age));
-
-        for(int i = 0; i < values.Length; i++) {
-            graphics[i].SetActive(false); // Disable young graphic
-        }
-
-        for(int i = 0; i < values.Length; i++) {
-            if(age == (Age)values.GetValue(i)) {
-                //graphics[i].SetActive(true); // Enable next graphic
-                return;
-            }
-        }
+        // *** Set material by Age *** //
+        mesh.GetComponent<Renderer>().material = material[(int)age];
     }
 
     // *** Search closest food to fish *** //
@@ -259,9 +239,8 @@ public class FishMovement : MonoBehaviour, IPooledObject {
                 for(int i = 0; i < values.Length; i++) {
                     if(age == (Age)values.GetValue(i)) {
                         age = (Age)values.GetValue(i + 1); // Set next Age
-
-                        graphics[i].SetActive(false); // Disable young graphic
-                        graphics[i + 1].SetActive(true); // Enable next graphic
+                        // *** Set material by Age *** //
+                        mesh.GetComponent<Renderer>().material = material[(int)age];
                         return;
                     }   
                 }

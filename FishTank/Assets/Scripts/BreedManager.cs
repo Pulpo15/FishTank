@@ -85,8 +85,12 @@ public class BreedManager : MonoBehaviour {
 
         FishMovement fishMovement = newFish.GetComponent<FishMovement>();
 
+        // *** Set fish Age *** //
+        fishMovement.SetAge(FishMovement.Age.Baby);
+
         int randNum = UnityEngine.Random.Range(0, 2); // Random int to set sex
 
+        // *** Set fish sex *** //
         if(randNum == 1) fishMovement.female = false;
         else if(randNum == 0) fishMovement.female = true;
     }
