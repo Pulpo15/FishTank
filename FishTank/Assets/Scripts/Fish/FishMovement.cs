@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class FishMovement : MonoBehaviour, IPooledObject {
     #region Macros
-    const int NEXT_AGE = 10;
     #endregion
 
     #region Public
+    public Animator animator;
     public float minSpeed, maxSpeed;
     public float maxEatTime;
+    public float maxDeadTime = 30;
+    public int maxNextAge = 10;
     public BreedManager.FishType fishType;
     public Age age = Age.Adult;
     public FeedManager.Food food = FeedManager.Food.DefaultFood;
@@ -25,10 +27,12 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     private int nextAge = 0;
     private float randomSpeed = 2;
     private float eatTime;
+    private float deadTime;
     private bool updateTarget;
     private bool canEat = true;
     private bool canBreed = true;
     private GameObject foodTarget;
+    private bool dead = false;
     #endregion
 
     public enum Age {
@@ -50,6 +54,15 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
         // *** Assign time to eat again *** //
         eatTime = maxEatTime;
+
+        // *** Reset animations *** //
+        animator.Play("Swim");
+
+        // *** Restart gravity *** //
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+
+        // *** Restart trigger *** //
+        gameObject.GetComponent<CapsuleCollider>().isTrigger = true;
 
         // *** Set fish target at the start *** //
         GetTargetPosition(null);
@@ -100,7 +113,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
             return;
         }
         // *** Check if there is food in FishTank *** //
-        if(canEat) {
+        if(canEat && partner == null) {
             Transform obj = GetClosestFood();
             if (obj != null) {
                 SetTargetFood(obj.gameObject);
@@ -152,14 +165,18 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     private void Update() {
-        if(targetPosition != null) {
+        #region Move to target
+        if(targetPosition != null && !dead) {
             // *** If fish has eaten get new targetPosition *** //
-            if(updateTarget && !foodTarget.activeSelf) { 
+            if(updateTarget && !foodTarget.activeSelf) {
                 updateTarget = false;
-                GetTargetPosition(null); 
-            } 
+                GetTargetPosition(null);
+            }
             // *** If fish has not eaten follow food *** //
-            else if(updateTarget) targetPosition = foodTarget.transform.position;
+            else if(updateTarget) { 
+                targetPosition = foodTarget.transform.position;
+                animator.Play("Eyes_Excited"); // Happy eyes
+            }
 
             // *** If fish has reached it's target get a new one *** //
             if(transform.position == targetPosition) {
@@ -172,23 +189,43 @@ public class FishMovement : MonoBehaviour, IPooledObject {
                     randomSpeed * Time.deltaTime);
                 transform.LookAt(targetPosition);
             }            
-        } else { // *** targetPosition is null so assign it again *** //
+        } else if (!dead) { // *** targetPosition is null so assign it again *** //
             randomSpeed = Random.Range(minSpeed, maxSpeed);
             GetTargetPosition(null);
         }
+        #endregion
 
+        if(dead) {
+
+        }
+
+        #region Timer
         // *** Timer to eat again *** //
-        if(!canEat) {
-            eatTime -= Time.deltaTime;
-            if(eatTime <= 0) {
+        if(!canEat || !dead) {
+            eatTime += Time.deltaTime;
+            if(eatTime >= maxEatTime && !canEat) {
                 canEat = true;
                 canBreed = true;
-                eatTime = maxEatTime;
+                animator.Play("Eyes_Squint"); // Hungry eyes
+            } 
+            if (eatTime >= maxDeadTime && !dead) {
+                dead = true;
+
+                targetPosition = Vector3.zero;
+
+                animator.Play("Eyes_Dead"); // Dead eyes
+                animator.Play("Death"); // Death animation
+
+                gameObject.GetComponent<Rigidbody>().useGravity = true;
+                gameObject.GetComponent<CapsuleCollider>().isTrigger = false;
             }
         }
+        #endregion
+
         // *** Set Target Position to Parter to breed *** //
         if(partner != null && canBreed && partner.activeSelf) {
             GetTargetPosition(partner.transform.position);
+            animator.Play("Eyes_Excited"); // Happy eyes
         }
     }
 
@@ -196,14 +233,18 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         // *** Collision with Food *** //
         if(other.gameObject == foodTarget && canEat) {
             other.gameObject.SetActive(false);
+
+            eatTime = 0; // Reset timer to eat again
             updateTarget = false;
             canEat = false;
             GetTargetPosition(null);
 
+            animator.Play("Eyes_Happy"); // Reset animation
+
             nextAge++; // Var to grow
 
             // *** Grow fish *** //
-            if(nextAge >= NEXT_AGE) {
+            if(nextAge >= maxNextAge) {
                 nextAge = 0;
 
                 // *** If elder DIE *** //
@@ -233,6 +274,9 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         if(other.gameObject == partner) {
             canBreed = false;
             partner = null;
+
+            animator.Play("Eyes_Happy"); // Reset animation
+
             // *** If female Breed new Fish *** //
             if (female) GameEvents.instance.BreedNewFish(fishType, transform);
         }

@@ -1936,6 +1936,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9163116278618590288, guid: 3ef0139a4d94ae546aaf1d1cf18b3c5e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 9163116279516947344, guid: 3ef0139a4d94ae546aaf1d1cf18b3c5e, type: 3}
       propertyPath: m_Name
       value: FishTank
