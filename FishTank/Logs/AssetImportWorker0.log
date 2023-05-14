@@ -15,7 +15,7 @@ E:/Unity/FishTank/FishTank
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-51347
+58937
 Successfully changed project path to: E:/Unity/FishTank/FishTank
 E:/Unity/FishTank/FishTank
 [UnityMemory] Configuration Parameters - Can be set up in boot.config
@@ -47,7 +47,7 @@ E:/Unity/FishTank/FishTank
     "memorysetup-temp-allocator-size-cloud-worker=32768"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Refreshing native plugins compatible for Editor in 96.04 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 97.83 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.3.14f1 (eee1884e7226)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.14f1/Editor/Data/Resources/UnitySubsystems
@@ -63,74 +63,74 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.14f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.14f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.14f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56052
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56424
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.14f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.008707 seconds.
+Registered in 0.007188 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 95.04 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 116.31 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.722 seconds
+- Completed reload, in  1.046 seconds
 Domain Reload Profiling:
-	ReloadAssembly (722ms)
-		BeginReloadAssembly (91ms)
+	ReloadAssembly (1047ms)
+		BeginReloadAssembly (107ms)
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-		EndReloadAssembly (503ms)
-			LoadAssemblies (88ms)
+		EndReloadAssembly (689ms)
+			LoadAssemblies (104ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (116ms)
+			SetupTypeCache (259ms)
 			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (33ms)
-			SetupLoadedEditorAssemblies (291ms)
+			RebuildScriptCaches (43ms)
+			SetupLoadedEditorAssemblies (320ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (7ms)
+				InitializePlatformSupportModulesInManaged (10ms)
 				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (95ms)
+				RefreshPlugins (116ms)
 				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (139ms)
-				ProcessInitializeOnLoadMethodAttributes (48ms)
+				ProcessInitializeOnLoadAttributes (145ms)
+				ProcessInitializeOnLoadMethodAttributes (47ms)
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.006020 seconds.
+Registered in 0.005448 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image E:\Unity\FishTank\FishTank\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Symbol file LoadedFromMemory doesn't match image E:\Unity\FishTank\FishTank\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 3.11 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 0.85 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Mono: successfully reloaded assembly
-- Completed reload, in  1.101 seconds
+- Completed reload, in  1.170 seconds
 Domain Reload Profiling:
-	ReloadAssembly (1102ms)
-		BeginReloadAssembly (120ms)
+	ReloadAssembly (1171ms)
+		BeginReloadAssembly (123ms)
 			ExecutionOrderSort (0ms)
-			DisableScriptedObjects (7ms)
+			DisableScriptedObjects (6ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-			CreateAndSetChildDomain (20ms)
-		EndReloadAssembly (850ms)
-			LoadAssemblies (117ms)
+			CreateAndSetChildDomain (27ms)
+		EndReloadAssembly (933ms)
+			LoadAssemblies (116ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (269ms)
+			SetupTypeCache (287ms)
 			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (58ms)
-			SetupLoadedEditorAssemblies (375ms)
+			RebuildScriptCaches (48ms)
+			SetupLoadedEditorAssemblies (450ms)
 				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (8ms)
-				SetLoadedEditorAssemblies (1ms)
-				RefreshPlugins (3ms)
-				BeforeProcessingInitializeOnLoad (91ms)
-				ProcessInitializeOnLoadAttributes (241ms)
+				InitializePlatformSupportModulesInManaged (5ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (1ms)
+				BeforeProcessingInitializeOnLoad (87ms)
+				ProcessInitializeOnLoadAttributes (325ms)
 				ProcessInitializeOnLoadMethodAttributes (22ms)
 				AfterProcessingInitializeOnLoad (9ms)
 				EditorAssembliesLoaded (0ms)
@@ -140,12 +140,12 @@ Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.09 seconds
-Refreshing native plugins compatible for Editor in 1.01 ms, found 3 plugins.
+Refreshing native plugins compatible for Editor in 1.48 ms, found 3 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 3362 Unused Serialized files (Serialized files now loaded: 0)
 Unloading 27 unused Assets / (114.3 KB). Loaded Objects now: 3821.
 Memory consumption went from 120.1 MB to 120.0 MB.
-Total: 3.902700 ms (FindLiveObjects: 0.359200 ms CreateObjectMapping: 0.272200 ms MarkObjects: 3.080000 ms  DeleteObjects: 0.190100 ms)
+Total: 3.423200 ms (FindLiveObjects: 0.535800 ms CreateObjectMapping: 0.330200 ms MarkObjects: 2.415800 ms  DeleteObjects: 0.140600 ms)
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
@@ -159,64 +159,64 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-  Time since last request: 21694.492241 seconds.
-  path: Assets/Prefabs/Fish/Piranha.prefab
-  artifactKey: Guid(c28fa2f3c52764644a282948045e36e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Prefabs/Fish/Piranha.prefab using Guid(c28fa2f3c52764644a282948045e36e0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fab6d385e406204672a937c406d81191') in 0.202974 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 10.980960 seconds.
-  path: Assets/Materials/Mat_FishTank.mat
-  artifactKey: Guid(894c24010e99b0f41a84de0125ab2e1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/Mat_FishTank.mat using Guid(894c24010e99b0f41a84de0125ab2e1c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '461353104ebf90a9554237fd8bd27417') in 0.039787 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 27.997786 seconds.
-  path: Assets/Materials/Food/Mat_BigFood.mat
-  artifactKey: Guid(522515ee9d195304f9ed682f8c949538) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Materials/Food/Mat_BigFood.mat using Guid(522515ee9d195304f9ed682f8c949538) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd0ac688dee20357f3600de27b7d4a51c') in 0.033691 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 121.838586 seconds.
-  path: Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Prefabs/Clownfish.prefab
-  artifactKey: Guid(ac025b10ea6ba084583ce269e3462202) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Prefabs/Clownfish.prefab using Guid(ac025b10ea6ba084583ce269e3462202) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3c5c855d92b6b1d5847892b41ad6bad6') in 0.079528 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 7.758245 seconds.
-  path: Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials
-  artifactKey: Guid(10e559f431798e247a41ac367dbaf021) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials using Guid(10e559f431798e247a41ac367dbaf021) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bb41517a864169b08958cfd00ac1ef9f') in 0.007126 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.046797 seconds.
-  path: Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_Clownfish.mat
-  artifactKey: Guid(d11dc8fd7da023f4ead6ae0d4fe39872) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_Clownfish.mat using Guid(d11dc8fd7da023f4ead6ae0d4fe39872) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '01c81ac776dc9c76a4cf23f1fcf59977') in 0.029664 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000063 seconds.
-  path: Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_SeaHorse.mat
-  artifactKey: Guid(25d07c50731613f42977d697f67dd8eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_SeaHorse.mat using Guid(25d07c50731613f42977d697f67dd8eb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '231aac5126f9e5a8bc404d0c043a8e55') in 0.030710 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000037 seconds.
-  path: Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_Orca.mat
-  artifactKey: Guid(03616b9c032154b4abd3d7b3f80e6b7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_Orca.mat using Guid(03616b9c032154b4abd3d7b3f80e6b7f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5876d4138883f99b8a4e7e6998c468a8') in 0.025465 seconds 
+  Time since last request: 95077.951853 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs
+  artifactKey: Guid(c7cd83dc75de0dd41bc871a49557248b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs using Guid(c7cd83dc75de0dd41bc871a49557248b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2303614dd505b91ed0d7911ce820938b') in 0.024109 seconds 
 ========================================================================
 Received Import Request.
   Time since last request: 0.000028 seconds.
-  path: Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_Lobster.mat
-  artifactKey: Guid(0988ad5b9c9e5ed4f964aff210786c64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_Lobster.mat using Guid(0988ad5b9c9e5ed4f964aff210786c64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7cfd6824ac9ff16eec94d6daa4f0dee1') in 0.030190 seconds 
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs/Puffin.prefab
+  artifactKey: Guid(d3505c2db9bfeb34d9c5a7ce551b4af4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs/Puffin.prefab using Guid(d3505c2db9bfeb34d9c5a7ce551b4af4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e07abd4c1c5028295e03398e8fe3cce5') in 0.350772 seconds 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000018 seconds.
-  path: Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_SeaOtter.mat
-  artifactKey: Guid(2fd069e2e8978f34699b16db690d1c66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.2/Sea Vol.1/Materials/M_SeaOtter.mat using Guid(2fd069e2e8978f34699b16db690d1c66) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '06bacf4398f8bbeefd7873ea00287ce0') in 0.026541 seconds 
+  Time since last request: 0.000041 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs/Husky.prefab
+  artifactKey: Guid(ea7f93afc1bf8bd45b583779059df112) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs/Husky.prefab using Guid(ea7f93afc1bf8bd45b583779059df112) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f287a40495e53e3510bf0b0a95e6e531') in 0.086960 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000048 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs/Cougar.prefab
+  artifactKey: Guid(f12f680d1fc3f43438fad8adf4ab9362) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Arctic Vol.2/Prefabs/Cougar.prefab using Guid(f12f680d1fc3f43438fad8adf4ab9362) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b7ace2ab8f4435b88bd4320ab314449f') in 0.099830 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 9.199240 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Farm Vol.2/Prefabs/Bull.prefab
+  artifactKey: Guid(2184b9af418238d42bed2cb45f193db7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Farm Vol.2/Prefabs/Bull.prefab using Guid(2184b9af418238d42bed2cb45f193db7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a1ae14d4c3a8e2d2ddf1019726c4f90a') in 0.125835 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000069 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Farm Vol.2/Prefabs/Goose.prefab
+  artifactKey: Guid(d027fe0bb8d5dd6448124f62cb0c412c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Farm Vol.2/Prefabs/Goose.prefab using Guid(d027fe0bb8d5dd6448124f62cb0c412c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a6df7094f39f5fb3e3be7b97bbdc7d8c') in 0.116398 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Farm Vol.2/Prefabs/Mallard.prefab
+  artifactKey: Guid(44e66fa05384d734ba453100e3d7ad09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Farm Vol.2/Prefabs/Mallard.prefab using Guid(44e66fa05384d734ba453100e3d7ad09) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4dbe3505b8d63839f1d182353d16cb5e') in 0.124609 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 19.005165 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Safari Vol.2/Prefabs/Baboon.prefab
+  artifactKey: Guid(89c9d143c248e4f448f9dd872d1b858c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Safari Vol.2/Prefabs/Baboon.prefab using Guid(89c9d143c248e4f448f9dd872d1b858c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ee7015166aa123085bfc260c270f2e06') in 0.119985 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000038 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Safari Vol.2/Prefabs/Lioness.prefab
+  artifactKey: Guid(e190cfd481b44754290304765b5f0ecd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Safari Vol.2/Prefabs/Lioness.prefab using Guid(e190cfd481b44754290304765b5f0ecd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8035c0dd13325db47ff0e1a040cf6bc0') in 0.144130 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Quirky Series Ultimate/Quirky Series Vol.3/Safari Vol.2/Prefabs/Giraffe.prefab
+  artifactKey: Guid(64413c53130aeab448c3c45dae8aba7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Quirky Series Ultimate/Quirky Series Vol.3/Safari Vol.2/Prefabs/Giraffe.prefab using Guid(64413c53130aeab448c3c45dae8aba7c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '95e474641fe2d769be8a34ca4539c316') in 0.126398 seconds 
 Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
 AssetImportWorker is now disconnected from the server
 Process exiting

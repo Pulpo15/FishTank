@@ -68,8 +68,8 @@ MonoBehaviour:
     y: 0
     width: 456
     height: 947
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 274
     height: 631
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -268,8 +268,8 @@ MonoBehaviour:
     y: 0
     width: 1190
     height: 631
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -542,22 +542,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/Fish
+    - Assets/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 92
   m_LastFolders:
-  - Assets/Prefabs/Fish
+  - Assets/Scripts
   m_LastFoldersGridSize: 92
   m_LastProjectPath: E:\Unity\FishTank\FishTank
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: ee5d0000
-    m_LastClickedID: 24046
-    m_ExpandedIDs: 00000000ce5d0000d05d0000d25d0000e45d0000e65d0000e85d0000ec5d0000fc5d0000fe5d0000965e00009a5e0000a45e0000a65e00000e7e0000c4800000c680000000ca9a3b
+    scrollPos: {x: 0, y: 2269}
+    m_SelectedIDs: c25d0000
+    m_LastClickedID: 24002
+    m_ExpandedIDs: 00000000985d00009a5d00009c5d0000bc5d0000be5d0000d45d0000da5d0000dc5d0000de5d0000e05d0000e25d0000e45d0000ea5d0000ee5d0000f05d0000527f0000547f0000587f00005a7f0000a6860000a8860000aa860000ac860000ae8600000494000006940000089400000a9400000c94000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -585,7 +585,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ce5d0000d05d0000d25d0000
+    m_ExpandedIDs: 00000000985d00009a5d00009c5d0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -713,9 +713,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 0cd0fdff10d0fdffe4eefdffeeeefdff2af0fdff10d8feffc4faffff1afbffff2cfbffff36fbffffda590000
+      m_SelectedIDs: 1ad7feff
+      m_LastClickedID: -76006
+      m_ExpandedIDs: 6a98ffffdc98ffff3c9fffffb6a0ffff10dbffff5edbffff36fbffff965f0000c8a100000eb80000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -997,9 +997,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -6.3583107, y: -3.5234733, z: -0.03803718}
+    m_Target: {x: -40.87775, y: -12.04768, z: -0.8386184}
     speed: 2
-    m_Value: {x: -6.3583107, y: -3.5234733, z: -0.03803718}
+    m_Value: {x: -40.87775, y: -12.04768, z: -0.8386184}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1046,13 +1046,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.13009071, y: -0.6984729, z: 0.13144681, w: 0.6913851}
+    m_Target: {x: 0.094342135, y: -0.69916207, z: 0.09390314, w: 0.7025271}
     speed: 2
-    m_Value: {x: 0.13112235, y: -0.6982472, z: 0.13248917, w: 0.69116163}
+    m_Value: {x: 0.09433788, y: -0.69913054, z: 0.09389891, w: 0.70249546}
   m_Size:
-    m_Target: 11.11794
+    m_Target: 28.453371
     speed: 2
-    m_Value: 11.641822
+    m_Value: 29.794106
   m_Ortho:
     m_Target: 0
     speed: 2

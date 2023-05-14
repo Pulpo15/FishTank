@@ -82,7 +82,9 @@ public class CameraManager : MonoBehaviour {
             transform.RotateAround(fishTank.transform.position, new Vector3(0.0f, posY, posZ * -1), 80 * Time.deltaTime * speedH);
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0.0f);
 
-        } else if(Input.GetMouseButton(0)) {
+        }
+        // *** Move camera using left click *** //
+        else if(Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftAlt)) { 
             // *** Assign position to mouse axis *** //
             float posZ = Input.GetAxis("Mouse X") * speedH * Time.deltaTime * 80f * -1;
             float posY = Input.GetAxis("Mouse Y") * speedH * Time.deltaTime * 80f * -1;
