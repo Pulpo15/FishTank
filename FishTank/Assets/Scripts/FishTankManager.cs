@@ -18,27 +18,27 @@ public class FishTankManager : MonoBehaviour {
     private int enumSize;
     #endregion
 
-    private void OnDrawGizmos() {
-        Bounds bounds = GetFishTankBounds();
+    //private void OnDrawGizmos() {
+    //    Bounds bounds = GetFishTankBounds();
 
-        for(int i = 0; i < bounds.max.x * 2 + 1; i++) {
-            for(int j = 0; j < bounds.max.z * 2 + 1; j++) {
-                for(int k = 0; k < bounds.max.y * 2 + 1; k++) {
+    //    for(int i = 0; i < bounds.max.x * 2 + 1; i++) {
+    //        for(int j = 0; j < bounds.max.z * 2 + 1; j++) {
+    //            for(int k = 0; k < bounds.max.y * 2 + 1; k++) {
 
-                    Vector3 pos = new Vector3(bounds.min.x + i, bounds.min.y + k, bounds.min.z + j);
+    //                Vector3 pos = new Vector3(bounds.min.x + i, bounds.min.y + k, bounds.min.z + j);
 
-                    if(pos == obstacle.transform.position) {
-                        Gizmos.color = new Color(1, 0, 0, 1f);
-                    } else {
-                        Gizmos.color = new Color(0, 1, 0, 0.2f);
-                    }
+    //                if(pos == obstacle.transform.position) {
+    //                    Gizmos.color = new Color(1, 0, 0, 1f);
+    //                } else {
+    //                    Gizmos.color = new Color(0, 1, 0, 0.2f);
+    //                }
 
-                    Gizmos.DrawCube(pos, new Vector3(1, 1, 1));
-                }
-            }
+    //                Gizmos.DrawCube(pos, new Vector3(1, 1, 1));
+    //            }
+    //        }
 
-        }
-    }
+    //    }
+    //}
 
     // *** Change selected food type *** //
     private void ModifyFoodType(int id) {

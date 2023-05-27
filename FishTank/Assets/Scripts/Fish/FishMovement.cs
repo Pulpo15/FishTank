@@ -145,6 +145,15 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     private void Update() {
+
+        RaycastHit hit;
+
+        bool obstacleDetected = Physics.Raycast(transform.position, transform.forward, out hit, 1f);
+
+        if(obstacleDetected) {
+            GetTargetPosition(null);
+        }
+
         #region Move to target
         if(targetPosition != null && !dead) {
             // *** If fish has eaten get new targetPosition *** //
