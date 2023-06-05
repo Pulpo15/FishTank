@@ -11,6 +11,7 @@ TagManager:
   - FishTank
   - FishContainer
   - Flat
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - UI
   - FishTank
   - Fish
-  - 
+  - Obstacle
   - 
   - 
   - 

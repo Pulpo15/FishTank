@@ -34,6 +34,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     private bool canBreed = true;
     private GameObject foodTarget;
     private bool dead = false;
+    int obstacleLayer;
     #endregion
 
     public enum Age {
@@ -87,11 +88,13 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     private void GetTargetPosition(Vector3? foodPosition) {
+
         // *** Get new food position *** //
         if(foodPosition != null) {
             targetPosition = (Vector3)foodPosition;
             return;
         }
+
         // *** Check if there is food in FishTank *** //
         if(canEat && partner == null) {
             Transform obj = GetClosestFood();
@@ -140,33 +143,47 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         GameEvents.instance.onUpdateFishTarget += GetTargetPosition;
         GameEvents.instance.onFoodInstantiate += SetTargetFood;
 
+        obstacleLayer = LayerMask.NameToLayer("Obstacle");
+
         OnObjectSpawn();
 
     }
 
     private void Update() {
 
+        #region Detect obsctacle
         RaycastHit hit;
-
         bool obstacleDetected = Physics.Raycast(transform.position, transform.forward, out hit, 1f);
 
-        if(obstacleDetected) {
+        if(obstacleDetected && hit.collider.gameObject.layer == obstacleLayer) {
+            updateTarget = false;
+
+            partner = null;
+
+            animator.Play("Eyes_Happy"); // Reset animation
+            canEat = false;
             GetTargetPosition(null);
+            canEat = true;
         }
+        #endregion
 
         #region Move to target
         if(targetPosition != null && !dead) {
+
+            #region Move to food
             // *** If fish has eaten get new targetPosition *** //
             if(updateTarget && !foodTarget.activeSelf) {
                 updateTarget = false;
                 GetTargetPosition(null);
             }
             // *** If fish has not eaten follow food *** //
-            else if(updateTarget) { 
+            else if(updateTarget) {
                 targetPosition = foodTarget.transform.position;
                 animator.Play("Eyes_Excited"); // Happy eyes
             }
+            #endregion
 
+            #region Move to position
             // *** If fish has reached it's target get a new one *** //
             if(transform.position == targetPosition) {
                 randomSpeed = Random.Range(minSpeed, maxSpeed);
@@ -177,16 +194,14 @@ public class FishMovement : MonoBehaviour, IPooledObject {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition,
                     randomSpeed * Time.deltaTime);
                 transform.LookAt(targetPosition);
-            }            
-        } else if (!dead) { // *** targetPosition is null so assign it again *** //
+            }
+            #endregion
+
+        } else if (targetPosition == null && !dead) { // *** targetPosition is null so assign it again *** //
             randomSpeed = Random.Range(minSpeed, maxSpeed);
             GetTargetPosition(null);
         }
         #endregion
-
-        if(dead) {
-
-        }
 
         #region Timer
         // *** Timer to eat again *** //
