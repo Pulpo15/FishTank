@@ -7,10 +7,22 @@ public class CameraManager : MonoBehaviour {
     const string TAG = "CamPosition";
     #endregion
 
+    #region Public
     public GameObject fishTank;
-    public float speedH = 2.0f;
+    public float speedH;
+    public bool invertV;
+    public bool invertH;
+    #endregion
 
+    #region Private
     private List<Transform> camPosition;
+    private float rotationY;
+    private float rotationX;
+    private Vector3 currentRotation;
+    private Vector3 smoothVelocity = Vector3.zero;
+    private float smoothTime = 0.1f;
+    private float distanceFromTarget = 15.0f;
+    #endregion 
 
     // *** Move camera to delimited points *** //
     private IEnumerator MoveCamera(int id) {
@@ -56,6 +68,9 @@ public class CameraManager : MonoBehaviour {
         // *** Set camera position to default *** //
         transform.position = camPosition[0].position;
         transform.rotation = camPosition[0].rotation;
+
+        rotationY = -98f;
+        currentRotation = new Vector3(0, rotationY, 0);
     }
 
     private void Update() {
@@ -70,38 +85,46 @@ public class CameraManager : MonoBehaviour {
 
         // *** Rotate camera using right click *** //
         if(Input.GetMouseButton(1)) {
-            // *** Assign position to mouse axis *** //
-            float posY = Input.GetAxis("Mouse X");
-            float posZ = Input.GetAxis("Mouse Y");
-
-            // *** Lock mouse *** //
+            // *** Unlock mouse *** //
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            // *** Rotate *** //
-            transform.RotateAround(fishTank.transform.position, new Vector3(0.0f, posY, posZ * -1), 80 * Time.deltaTime * speedH);
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0.0f);
+            //// *** Assign position to mouse axis *** //
+            float mouseX = Input.GetAxis("Mouse X") * Time.deltaTime * speedH * 100;
+            float mouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * speedH * 100;
 
-        }
-        // *** Move camera using left click *** //
-        else if(Input.GetMouseButton(0) && Input.GetKey(KeyCode.LeftAlt)) { 
-            // *** Assign position to mouse axis *** //
-            float posZ = Input.GetAxis("Mouse X") * speedH * Time.deltaTime * 80f * -1;
-            float posY = Input.GetAxis("Mouse Y") * speedH * Time.deltaTime * 80f * -1;
+            // Invert Axis
+            if(invertV) mouseY *= -1;
+            if(invertH) mouseX *= -1;
 
-            transform.position = new Vector3(transform.position.x, transform.position.y + posY, transform.position.z + +posZ);
+            rotationY += mouseX;
+            rotationX += mouseY;
 
+            rotationX = Mathf.Clamp(rotationX, -10f, 60f);
+
+            Vector3 nextRotation = new Vector3(rotationX, rotationY);
+
+            currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation, ref smoothVelocity, smoothTime);
+            transform.localEulerAngles = currentRotation;
+
+            transform.position = fishTank.transform.position - transform.forward * distanceFromTarget;
         } else {
             // *** Unlock mouse *** //
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-        } 
+        }
 
         // *** Zoom OUT/IN *** //
         if(Input.GetAxisRaw("Mouse ScrollWheel") > 0) {
-            transform.position += transform.forward * Time.deltaTime * speedH * 100;
+            if(distanceFromTarget > 1f) { // Clamp Zoom
+                transform.position += transform.forward * Time.deltaTime * speedH * 100;
+                distanceFromTarget -= Time.deltaTime * speedH * 100;
+            }
         } else if(Input.GetAxisRaw("Mouse ScrollWheel") < 0) {
-            transform.position -= transform.forward * Time.deltaTime * speedH * 100;
+            if(distanceFromTarget < 40f) { // Clamp Zoom
+                transform.position -= transform.forward * Time.deltaTime * speedH * 100;
+                distanceFromTarget += Time.deltaTime * speedH * 100;
+            }
         }
     }
 }
