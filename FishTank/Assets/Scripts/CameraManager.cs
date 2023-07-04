@@ -27,8 +27,8 @@ public class CameraManager : MonoBehaviour {
     // *** Move camera to delimited points *** //
     private IEnumerator MoveCamera(int id) {
         if(id < camPosition.Count) { // Check if id is valid
-            // *** Using coroutine move camera every frame *** //
-            while (transform.position != camPosition[id].position) {
+                                     // *** Using coroutine move camera every frame *** //
+            while(transform.position != camPosition[id].position) {
                 transform.position = Vector3.MoveTowards(transform.position, camPosition[id].position,
                     50 * Time.deltaTime);
 
@@ -47,7 +47,11 @@ public class CameraManager : MonoBehaviour {
     }
 
     private void ExecuteMoveCamera(int id) {
-        StartCoroutine(MoveCamera(id));
+        if(Input.GetMouseButton(1)) {
+            
+        } else {
+            StartCoroutine(MoveCamera(id));
+        }
     }
 
     private void Start() {

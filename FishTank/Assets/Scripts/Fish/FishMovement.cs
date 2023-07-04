@@ -271,7 +271,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
             }
 
             // *** If Adult search add fish to couple *** //
-            if(age == Age.Adult) GameEvents.instance.SearchCouple(fishType, gameObject);
+            //if(age == Age.Adult) GameEvents.instance.SearchCouple(fishType, gameObject);
         } 
         // *** Collision with partner *** //
         if(other.gameObject == partner) {
