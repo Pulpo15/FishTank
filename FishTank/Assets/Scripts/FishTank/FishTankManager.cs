@@ -10,13 +10,29 @@ public class FishTankManager : MonoBehaviour {
 
     #region Public
     public GameObject obstacle;
+    public bool useRemover;
+    public static FishTankManager instance;
+    public int maxWaterQuality = 100;
+    public List<GameObject> fishInTank;
     #endregion
 
     #region Private
     private BreedManager.FishType fishType;
     private int fishId = 0;
     private int enumSize;
+    private int waterQuality;
     #endregion
+
+    // *** Update FishTank Water quality & check if fish can be alive in it *** //
+    public void UpdateWaterQuality(int _waterQuality) { 
+        waterQuality += _waterQuality;
+
+        if(waterQuality < 0) waterQuality = 0;
+
+        foreach(GameObject fish in fishInTank) {
+            fish.GetComponent<FishMovement>().CheckWaterQuality(waterQuality);
+        }
+    }
 
     //private void OnDrawGizmos() {
     //    Bounds bounds = GetFishTankBounds();
@@ -52,13 +68,6 @@ public class FishTankManager : MonoBehaviour {
         }
     }
 
-    // *** Prefactored Spawn Fish *** //
-    private void SpawnNewFish(string tag, bool female) {
-        GameObject obj = ObjectPooler.instance.SpawnFromPool(fishType.ToString(), transform.position, transform.rotation);
-        obj.GetComponent<FishMovement>().SetAge(FishMovement.Age.Adult);
-        obj.GetComponent<FishMovement>().female = female;
-    }
-
     // *** Returns Bounds of FishTank *** //
     private Bounds GetFishTankBounds() {
 
@@ -83,6 +92,10 @@ public class FishTankManager : MonoBehaviour {
         return bounds;
     }
 
+    private void Awake() {
+        instance = this;
+    }
+
     private void Start() {
         // *** Subscribe events *** //
         GameEvents.instance.onGetFishTankBounds += GetFishTankBounds;
@@ -90,6 +103,8 @@ public class FishTankManager : MonoBehaviour {
         // *** Get size of enum *** //
         Array values = Enum.GetValues(typeof(BreedManager.FishType));
         enumSize = values.Length - 1;
+
+        waterQuality = maxWaterQuality;
     }
 
     private void Update() {
@@ -112,8 +127,6 @@ public class FishTankManager : MonoBehaviour {
             fishData.female = true;
 
             FishInventory.instance.SpawnFish(fishData, false);
-
-            //SpawnNewFish(fishType.ToString(), false);
         } else if(Input.GetKeyDown(KeyCode.RightControl)) {
             FishInventory.FishData fishData = new FishInventory.FishData();
 
@@ -122,9 +135,28 @@ public class FishTankManager : MonoBehaviour {
             fishData.female = false;
 
             FishInventory.instance.SpawnFish(fishData, false);
-            //SpawnNewFish(fishType.ToString(), true);
         }
 
+        // *** Remove dead fish *** //
+        if(Input.GetMouseButton(0) && Cursor.visible && useRemover) {
+            Vector3 mousePos = Input.mousePosition;
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
+            if(Physics.Raycast(ray, out RaycastHit hit)) {
+                if(hit.collider.CompareTag("DefaultFish")) {
+                    GameObject obj = hit.collider.gameObject;
+                    FishMovement fish = obj.GetComponent<FishMovement>();
+
+                    if(fish.GetDead()) {
+                        FishInventory.instance.KillFish(obj);
+                    }
+
+                }
+            } else {
+                GameEvents.instance.MessageRecieved("Select a fish");
+            }
+        }
+
+        Debug.Log(waterQuality);
     }
 }

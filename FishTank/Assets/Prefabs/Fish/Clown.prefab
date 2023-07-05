@@ -59,6 +59,7 @@ MonoBehaviour:
   maxEatTime: 40
   maxDeadTime: 60
   maxNextAge: 10
+  waterQuality: 90
   fishType: 1
   age: 0
   food: 0

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FishInventory : MonoBehaviour {
+    
+    public FishTankManager TankManager;
+
     public struct FishData {
         public FishMovement.Age age;
         public BreedManager.FishType type;
@@ -42,5 +45,16 @@ public class FishInventory : MonoBehaviour {
         }
 
         fishList.Add(fishData);
+        TankManager.fishInTank.Add(newFish);
+
+        //Debug.Log(fishList.Count);
+    }
+
+    public void KillFish(GameObject fish) {
+        for(int i = 0; i < fishList.Count; i++) {
+            if (fishList[i].instance == fish) { fishList.RemoveAt(i); }
+        }
+        TankManager.fishInTank.Remove(fish);
+        fish.SetActive(false);
     }
 }

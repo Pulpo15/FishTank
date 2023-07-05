@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     public float maxEatTime;
     public float maxDeadTime = 30;
     public int maxNextAge = 10;
+    public int waterQuality = 0;
     public BreedManager.FishType fishType;
     public Age age = Age.Adult;
     public FeedManager.Food food = FeedManager.Food.DefaultFood;
@@ -34,6 +36,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     private bool canBreed = true;
     private GameObject foodTarget;
     private bool dead = false;
+    public bool GetDead() { return dead; }
     int obstacleLayer;
     #endregion
 
@@ -85,6 +88,22 @@ public class FishMovement : MonoBehaviour, IPooledObject {
             }
         }
         return tMin;
+    }
+
+    // *** Check if fish can be alive in actual water quality *** //
+    public void CheckWaterQuality(int _waterQuality) {
+        if(_waterQuality <= waterQuality) {
+            StartCoroutine(ReduceWaterQuality(_waterQuality));
+        }
+    }
+
+    // *** Coroutine to kill fish *** //
+    private IEnumerator ReduceWaterQuality(int _waterQuality) {
+        yield return new WaitForSeconds(5f);
+
+        if(_waterQuality <= waterQuality) {
+            eatTime = maxDeadTime + 1;
+        }
     }
 
     private void GetTargetPosition(Vector3? foodPosition) {
@@ -222,6 +241,8 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
                 gameObject.GetComponent<Rigidbody>().useGravity = true;
                 gameObject.GetComponent<CapsuleCollider>().isTrigger = false;
+
+
             }
         }
         #endregion
@@ -230,6 +251,14 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         if(partner != null && canBreed && partner.activeSelf) {
             GetTargetPosition(partner.transform.position);
             animator.Play("Eyes_Excited"); // Happy eyes
+        }
+
+        if(dead) {
+            eatTime += Time.deltaTime;
+            if(eatTime>= 5f) {
+                FishTankManager.instance.UpdateWaterQuality(-10);
+                eatTime = 0f;
+            }
         }
     }
 
@@ -253,7 +282,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
                 // *** If elder DIE *** //
                 if (age == Age.Elder) {
-                    gameObject.SetActive(false);
+                    eatTime = maxDeadTime + 1;
                     return;
                 }
 

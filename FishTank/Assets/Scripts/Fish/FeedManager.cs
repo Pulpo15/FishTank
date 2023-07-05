@@ -9,6 +9,8 @@ public class FeedManager : MonoBehaviour {
 
     #region Public
     public Food food;
+    public bool useFood;
+    public static FeedManager instance;
     #endregion
 
     #region Private
@@ -58,6 +60,10 @@ public class FeedManager : MonoBehaviour {
         }
     }
 
+    private void Awake() {
+        instance = this;
+    }
+
     private void Start() {
         // *** Get FishTank Bounds *** //
         bounds = GameEvents.instance.GetFishTankBounds();
@@ -69,7 +75,7 @@ public class FeedManager : MonoBehaviour {
 
     private void Update() {
         // *** Instantiate food if mouse & camera position is correct *** //
-        if(Input.GetMouseButtonDown(0) && Cursor.visible == true) {
+        if(Input.GetMouseButtonDown(0) && Cursor.visible && useFood) {
             Vector3 pos = FoodInstantiate();
             if(pos != Vector3.zero) {
                 GameObject obj = ObjectPooler.instance.SpawnFromPool(food.ToString(), pos, transform.rotation);
