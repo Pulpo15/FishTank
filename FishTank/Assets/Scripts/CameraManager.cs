@@ -78,17 +78,8 @@ public class CameraManager : MonoBehaviour {
     }
 
     private void Update() {
-        // *** Switch cameras *** //
-        if(Input.GetKeyDown(KeyCode.Alpha1)) {
-            GameEvents.instance.CamKeyPressed(0);
-        } else if(Input.GetKeyDown(KeyCode.Alpha2)) {
-            GameEvents.instance.CamKeyPressed(1);
-        } else if(Input.GetKeyDown(KeyCode.Alpha3)) {
-            GameEvents.instance.CamKeyPressed(2);
-        }
-
         // *** Rotate camera using right click *** //
-        if(Input.GetMouseButton(1)) {
+        if(Input.GetMouseButton(2)) {
             // *** Unlock mouse *** //
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;

@@ -1,19 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InterfaceManager : MonoBehaviour {
-
-    public Sprite image;
     [Header("Inventory")]
     public GameObject inventory;
     public Transform buttonsZone;
 
-
     private List<Button> buttonsList;
-    private Sprite[] fishSprites;
 
     public void UseFood() {
         if(!FeedManager.instance.useFood) {
@@ -45,12 +42,11 @@ public class InterfaceManager : MonoBehaviour {
 
             for(int j = 0; j < horizontalZone.childCount; j++) {
                 Button button = horizontalZone.GetChild(j).GetComponent<Button>();
+                button.GetComponentInChildren<TextMeshProUGUI>().text = "";
                 buttonsList.Add(button);
                 button.gameObject.SetActive(false);
             }
         }
-
-        //fishSprites = (Sprite[])Resources.LoadAll("FishPng");
     }
 
     private void Update() {
