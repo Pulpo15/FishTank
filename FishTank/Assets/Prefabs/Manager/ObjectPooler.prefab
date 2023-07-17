@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2921133462841607699}
   - component: {fileID: 2921133462841607698}
-  - component: {fileID: 486211092394940108}
   m_Layer: 0
   m_Name: ObjectPooler
   m_TagString: Untagged
@@ -61,15 +60,3 @@ MonoBehaviour:
   - tag: Clown
     prefab: {fileID: 5905104734095047765, guid: a37abcfc3d929f5459e01598280a2d55, type: 3}
     size: 30
---- !u!114 &486211092394940108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2921133462841607697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b35d3aad3140a3e4680eb59e1bd37e85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

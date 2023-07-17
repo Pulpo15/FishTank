@@ -70,7 +70,6 @@ public class FishTankManager : MonoBehaviour {
 
     // *** Returns Bounds of FishTank *** //
     private Bounds GetFishTankBounds() {
-
         List<Transform> fishTankBounds = new List<Transform>();
 
         // *** Get child GO Bounds in FishTank *** //
@@ -150,13 +149,10 @@ public class FishTankManager : MonoBehaviour {
                     if(fish.GetDead()) {
                         FishInventory.instance.KillFish(obj);
                     }
-
                 }
             } else {
                 GameEvents.instance.MessageRecieved("Select a fish");
             }
         }
-
-        Debug.Log(waterQuality);
     }
 }

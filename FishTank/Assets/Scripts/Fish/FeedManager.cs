@@ -27,6 +27,9 @@ public class FeedManager : MonoBehaviour {
 
     // *** Instantiate food at mouse position *** //
     private Vector3 FoodInstantiate() {
+        // *** Get FishTank Bounds *** //
+        bounds = GameEvents.instance.GetFishTankBounds();
+
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
         Vector3 objectPos = Vector3.zero;
@@ -65,9 +68,6 @@ public class FeedManager : MonoBehaviour {
     }
 
     private void Start() {
-        // *** Get FishTank Bounds *** //
-        bounds = GameEvents.instance.GetFishTankBounds();
-
         // *** Get size of enum *** //
         Array values = Enum.GetValues(typeof(Food));
         enumSize = values.Length - 1;
