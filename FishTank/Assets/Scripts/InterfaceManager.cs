@@ -11,6 +11,7 @@ public class InterfaceManager : MonoBehaviour {
     public Transform buttonsZone;
 
     private List<Button> buttonsList;
+    private FishTankManager fishTank;
 
     public void UseFood() {
         if(!FeedManager.instance.useFood) {
@@ -34,6 +35,11 @@ public class InterfaceManager : MonoBehaviour {
         }
     }
 
+    public void ResetUse() {
+        FishTankManager.instance.useRemover = false;
+        FeedManager.instance.useFood = false;
+    }
+
     private void Start() {
         buttonsList = new List<Button>();
 
@@ -53,8 +59,11 @@ public class InterfaceManager : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Tab)) {
             if(inventory.activeSelf) {
                 inventory.SetActive(false);
+                Time.timeScale = 1f;
             } else if(!inventory.activeSelf) {
                 inventory.SetActive(true);
+
+                Time.timeScale = 0f;
 
                 for(int i = 0; i < FishInventory.instance.fishList.Count; i++) {
 
@@ -64,6 +73,10 @@ public class InterfaceManager : MonoBehaviour {
                     buttonsList[i].gameObject.SetActive(true);
                 }
             }
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            ResetUse();
         }
     }
 }

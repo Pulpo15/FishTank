@@ -79,7 +79,7 @@ public class CameraManager : MonoBehaviour {
 
     private void Update() {
         // *** Rotate camera using right click *** //
-        if(Input.GetMouseButton(2)) {
+        if(Input.GetMouseButton(2) && fishTank != null) {
             // *** Unlock mouse *** //
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
