@@ -8,10 +8,10 @@ public class CameraManager : MonoBehaviour {
     #endregion
 
     #region Public
-    public GameObject fishTank;
     public float speedH;
     public bool invertV;
     public bool invertH;
+    public Transform generalPosition;
     #endregion
 
     #region Private
@@ -36,7 +36,7 @@ public class CameraManager : MonoBehaviour {
                 float dist = Vector3.Distance(transform.position, camPosition[id].position);
                 if(dist < 1f) transform.position = camPosition[id].position;
 
-                transform.LookAt(fishTank.transform); // Aim camera to FishTank
+                transform.LookAt(FishTankSelector.fishTankManager.transform); // Aim camera to FishTank
 
                 yield return 0; // Skip to next frame
             }
@@ -54,32 +54,36 @@ public class CameraManager : MonoBehaviour {
         }
     }
 
-    private void Start() {
-        // *** Subscribe event *** //
-        GameEvents.instance.onCamKeyPressed += ExecuteMoveCamera;
-
+    private void SetFishtankCamera() {
         // *** Get all Camera positions from the fishtank *** //
         camPosition = new List<Transform>();
 
-        foreach(Transform item in fishTank.transform) {
+        foreach(Transform item in FishTankSelector.fishTankManager.transform) {
             if(item.tag == TAG) {
-                for(int i = 0; i < item.childCount; i++) { 
+                for(int i = 0; i < item.childCount; i++) {
                     camPosition.Add(item.GetChild(i));
                 }
             }
         }
 
         // *** Set camera position to default *** //
-        transform.position = camPosition[0].position;
-        transform.rotation = camPosition[0].rotation;
+        //transform.position = camPosition[0].position;
+        //transform.rotation = camPosition[0].rotation;
+        StartCoroutine(MoveCamera(0));
 
         rotationY = -98f;
         currentRotation = new Vector3(0, rotationY, 0);
     }
+    private void SetGeneralCamera() {
+        transform.position = generalPosition.position;
+        transform.rotation = generalPosition.rotation;
+    }
 
-    private void Update() {
+    private void MoveCameraArroundFishtank() {
+        if(FishTankSelector.fishTankManager == null) return;
+
         // *** Rotate camera using right click *** //
-        if(Input.GetMouseButton(2) && fishTank != null) {
+        if(Input.GetMouseButton(2) && FishTankSelector.fishTankManager != null) {
             // *** Unlock mouse *** //
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -102,12 +106,24 @@ public class CameraManager : MonoBehaviour {
             currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation, ref smoothVelocity, smoothTime);
             transform.localEulerAngles = currentRotation;
 
-            transform.position = fishTank.transform.position - transform.forward * distanceFromTarget;
+            transform.position = FishTankSelector.fishTankManager.transform.position - transform.forward * distanceFromTarget;
         } else {
             // *** Unlock mouse *** //
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
+    }
+
+    private void Start() {
+        // *** Subscribe event *** //
+        GameEvents.instance.onCamKeyPressed += ExecuteMoveCamera;
+        GameEvents.instance.onFishTankUpdated += SetFishtankCamera;
+        GameEvents.instance.onFishTankRemoved += SetGeneralCamera;
+    }
+
+    private void Update() {
+
+        MoveCameraArroundFishtank();
 
         // *** Zoom OUT/IN *** //
         if(Input.GetAxisRaw("Mouse ScrollWheel") > 0) {

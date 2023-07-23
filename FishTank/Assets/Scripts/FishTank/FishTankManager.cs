@@ -9,9 +9,7 @@ public class FishTankManager : MonoBehaviour {
     #endregion
 
     #region Public
-    public GameObject obstacle;
     public bool useRemover;
-    public static FishTankManager instance;
     public int maxWaterQuality = 100;
     public List<GameObject> fishInTank;
     #endregion
@@ -69,7 +67,7 @@ public class FishTankManager : MonoBehaviour {
     }
 
     // *** Returns Bounds of FishTank *** //
-    private Bounds GetFishTankBounds() {
+    public Bounds GetFishTankBounds() {
         List<Transform> fishTankBounds = new List<Transform>();
 
         // *** Get child GO Bounds in FishTank *** //
@@ -86,19 +84,16 @@ public class FishTankManager : MonoBehaviour {
         // *** Get defined vertex of FishTank *** //
         for(int i = 0; i < fishTankBounds.Count; i++) {
             bounds.Encapsulate(fishTankBounds[i].position);
+            //Debug.Log(fishTankBounds[i].position);
+            //Debug.Log(fishTankBounds[i].localPosition);
         }
+
+        //Debug.Log($"3 Max z: {bounds.max.z}, Min z: {bounds.min.z}");
 
         return bounds;
     }
 
-    private void Awake() {
-        instance = this;
-    }
-
     private void Start() {
-        // *** Subscribe events *** //
-        GameEvents.instance.onGetFishTankBounds += GetFishTankBounds;
-
         // *** Get size of enum *** //
         Array values = Enum.GetValues(typeof(BreedManager.FishType));
         enumSize = values.Length - 1;
@@ -107,6 +102,10 @@ public class FishTankManager : MonoBehaviour {
     }
 
     private void Update() {
+
+        // *** If FishTank is not selected don't Update *** //;
+        if(FishTankSelector.fishTankManager != this) return;
+
         // *** Change selected fish type *** //
         if(Input.GetMouseButtonDown(4) && fishId < enumSize) {
             fishId++;

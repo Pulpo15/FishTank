@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class FishInventory : MonoBehaviour {
-    
-    public FishTankManager TankManager;
-
     public struct FishData {
         public FishMovement.Age age;
         public BreedManager.FishType type;
@@ -22,8 +19,10 @@ public class FishInventory : MonoBehaviour {
     }
 
     public void SpawnFish(FishData fishData, bool randomSex) {
-        GameObject newFish = ObjectPooler.instance.SpawnFromPool(fishData.type.ToString(), transform.position, Quaternion.identity);
+        GameObject newFish = ObjectPooler.instance.SpawnFromPool(fishData.type.ToString(), 
+            FishTankSelector.fishTankManager.transform.position, Quaternion.identity);
 
+        // *** Assign fish object to save in list  *** //
         fishData.instance = newFish;
 
         FishMovement fishMovement = newFish.GetComponent<FishMovement>();
@@ -45,7 +44,7 @@ public class FishInventory : MonoBehaviour {
         }
 
         fishList.Add(fishData);
-        TankManager.fishInTank.Add(newFish);
+        FishTankSelector.fishTankManager.fishInTank.Add(newFish);
 
         //Debug.Log(fishList.Count);
     }
@@ -54,7 +53,9 @@ public class FishInventory : MonoBehaviour {
         for(int i = 0; i < fishList.Count; i++) {
             if (fishList[i].instance == fish) { fishList.RemoveAt(i); }
         }
-        TankManager.fishInTank.Remove(fish);
+
+        FishTankManager fishTankManager = fish.GetComponent<FishTankManager>();
+        fishTankManager.fishInTank.Remove(fish);
         fish.SetActive(false);
     }
 }

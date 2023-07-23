@@ -361,6 +361,7 @@
 "Assets/Scripts/Fish/FishInventory.cs"
 "Assets/Scripts/Fish/FishMovement.cs"
 "Assets/Scripts/FishTank/FishTankManager.cs"
+"Assets/Scripts/FishTank/FishTankSelector.cs"
 "Assets/Scripts/FishTank/JunkRemover.cs"
 "Assets/Scripts/GameEvents.cs"
 "Assets/Scripts/InterfaceManager.cs"

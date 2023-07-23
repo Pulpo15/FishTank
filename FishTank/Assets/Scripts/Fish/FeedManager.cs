@@ -28,7 +28,7 @@ public class FeedManager : MonoBehaviour {
     // *** Instantiate food at mouse position *** //
     private Vector3 FoodInstantiate() {
         // *** Get FishTank Bounds *** //
-        bounds = GameEvents.instance.GetFishTankBounds();
+        bounds = FishTankSelector.fishTankManager.GetFishTankBounds();
 
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);

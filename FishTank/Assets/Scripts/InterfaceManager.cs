@@ -9,38 +9,51 @@ public class InterfaceManager : MonoBehaviour {
     [Header("Inventory")]
     public GameObject inventory;
     public Transform buttonsZone;
+    public GameObject maintenance;
 
     private List<Button> buttonsList;
-    private FishTankManager fishTank;
 
     public void UseFood() {
         if(!FeedManager.instance.useFood) {
             FeedManager.instance.useFood = true;
-            FishTankManager.instance.useRemover = false;
+            FishTankSelector.fishTankManager.useRemover = false;
         }
         else if(FeedManager.instance.useFood) {
             FeedManager.instance.useFood = false;
-            FishTankManager.instance.useRemover = true;
+            FishTankSelector.fishTankManager.useRemover = true;
         }
     }
 
     public void UseRemover() {
-        if(!FishTankManager.instance.useRemover) {
-            FishTankManager.instance.useRemover = true;
+        if(!FishTankSelector.fishTankManager.useRemover) {
+            FishTankSelector.fishTankManager.useRemover = true;
             FeedManager.instance.useFood = false;
         }
-        else if(FishTankManager.instance.useRemover) {
-            FishTankManager.instance.useRemover = false;
+        else if(FishTankSelector.fishTankManager.useRemover) {
+            FishTankSelector.fishTankManager.useRemover = false;
             FeedManager.instance.useFood = true;
         }
     }
 
     public void ResetUse() {
-        FishTankManager.instance.useRemover = false;
-        FeedManager.instance.useFood = false;
+        if (FishTankSelector.fishTankManager != null) {
+            FishTankSelector.fishTankManager.useRemover = false;
+            FeedManager.instance.useFood = false;
+        }
+    }
+
+    private void SetFishTankCanvas() {
+        maintenance.SetActive(true);
+    }
+
+    private void RemoveFishTankCanvas() {
+        maintenance.SetActive(false);
     }
 
     private void Start() {
+        GameEvents.instance.onFishTankUpdated += SetFishTankCanvas;
+        GameEvents.instance.onFishTankRemoved += RemoveFishTankCanvas;
+
         buttonsList = new List<Button>();
 
         for(int i = 0; i < buttonsZone.childCount; i++) {

@@ -29,6 +29,22 @@ public class GameEvents : MonoBehaviour {
         }
     }
 
+    // *** Select FishTank *** //
+    public event Action onFishTankUpdated;
+    public void FishTankUpdated() {
+        if (onFishTankUpdated != null) {
+            onFishTankUpdated();
+        }
+    }
+
+    // *** Unselect FishTank *** //
+    public event Action onFishTankRemoved;
+    public void FishTankRemoved() {
+        if(onFishTankRemoved != null) {
+            onFishTankRemoved();
+        }
+    }
+
     // *** Message system *** //
     public event Action<string> onMessageRecieved;
     public void MessageRecieved(string message) { 
@@ -76,15 +92,15 @@ public class GameEvents : MonoBehaviour {
         }
     }
 
-    // *** Returns selected FishTank bounds *** //
-    public event Func<Bounds> onGetFishTankBounds;
-    public Bounds GetFishTankBounds() { 
-        if (onGetFishTankBounds != null) {
-            return onGetFishTankBounds();
-        }
-        Bounds bounds = new Bounds();
-        return bounds;
-    }
+    //// *** Returns selected FishTank bounds *** //
+    //public event Func<Bounds> onGetFishTankBounds;
+    //public Bounds GetFishTankBounds() { 
+    //    if (onGetFishTankBounds != null) {
+    //        return onGetFishTankBounds();
+    //    }
+    //    Bounds bounds = new Bounds();
+    //    return bounds;
+    //}
 
     private void ShowMessage(string message) {
         Debug.Log(message);

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6415331783530960333}
   - component: {fileID: 6415331783530960332}
+  - component: {fileID: 4193733037379084050}
   m_Layer: 0
   m_Name: Game Event System
   m_TagString: Untagged
@@ -44,6 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64a9671ba31a29942bb822a4b3223175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishContainer: {fileID: 0}
   moving: 0
   camPosition: 0
+--- !u!114 &4193733037379084050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6415331783530960322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595e2cd934467f14484baafc2a14eca1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

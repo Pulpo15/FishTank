@@ -25,6 +25,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     #endregion
 
     #region Private
+    private FishTankManager fishTankManager;
     private Bounds bounds;
     private Vector3 targetPosition;
     private int nextAge = 0;
@@ -48,6 +49,18 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     public void OnObjectSpawn() {
+        fishTankManager = FishTankSelector.fishTankManager;
+
+        // *** Get FishTank Bounds *** //
+        bounds = fishTankManager.GetFishTankBounds();
+
+        // *** Check assigned bounds *** //
+        if(bounds.size == Vector3.zero) {
+            Debug.LogWarning("Fish Tank Bounds Unassigned : " + gameObject.name);
+            gameObject.SetActive(false);
+            return;
+        }
+
         // *** Assign time to eat again *** //
         eatTime = maxEatTime;
 
@@ -107,7 +120,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     private void GetTargetPosition(Vector3? foodPosition) {
-
         // *** Get new food position *** //
         if(foodPosition != null) {
             targetPosition = (Vector3)foodPosition;
@@ -124,9 +136,9 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         }
 
         #region Debug bounds
-        //Debug.Log($"Max x: {bounds.max.x}, Min x: {bounds.min.x}");
-        //Debug.Log($"Max y: {bounds.max.y}, Min y: {bounds.min.y}");
-        //Debug.Log($"Max z: {bounds.max.z}, Min z: {bounds.min.z}");
+        //Debug.Log($"1 Max x: {bounds.max.x}, Min x: {bounds.min.x}");
+        //Debug.Log($"2 Max y: {bounds.max.y}, Min y: {bounds.min.y}");
+        //Debug.Log($"3 Max z: {bounds.max.z}, Min z: {bounds.min.z}");
         #endregion
 
         // *** Get size of FishTank using defined vertex *** //
@@ -136,7 +148,9 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
         targetPosition = new Vector3(x, y, z);
 
-        //Instantiate(fishTankBounds[0], targetPosition, Quaternion.identity);
+        //Debug.Log(z);
+
+        //Instantiate(icon, targetPosition, Quaternion.identity);
     }
 
     // *** If food is correct & can breed set target *** //
@@ -148,28 +162,14 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     }
 
     private void Start() {
-        // *** Get FishTank Bounds *** //
-        bounds = GameEvents.instance.GetFishTankBounds();
-
-        // *** Check assigned bounds *** //
-        if(bounds.size == Vector3.zero) {
-            Debug.LogWarning("Fish Tank Bounds Unassigned : " + gameObject.name);
-            gameObject.SetActive(false);
-            return;
-        }
-
         // *** Subscribe events *** //
         GameEvents.instance.onUpdateFishTarget += GetTargetPosition;
         GameEvents.instance.onFoodInstantiate += SetTargetFood;
 
         obstacleLayer = LayerMask.NameToLayer("Obstacle");
-
-        OnObjectSpawn();
-
     }
 
     private void Update() {
-
         #region Detect obsctacle
         RaycastHit hit;
         bool obstacleDetected = Physics.Raycast(transform.position, transform.forward, out hit, 1f);
@@ -256,7 +256,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         if(dead) {
             eatTime += Time.deltaTime;
             if(eatTime>= 5f) {
-                FishTankManager.instance.UpdateWaterQuality(-10);
+                FishTankSelector.fishTankManager.UpdateWaterQuality(-10);
                 eatTime = 0f;
             }
         }

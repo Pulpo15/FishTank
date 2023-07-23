@@ -805,7 +805,7 @@ MonoBehaviour:
   minSpeed: 1.5
   maxSpeed: 2
   maxEatTime: 40
-  maxDeadTime: 60
+  maxDeadTime: 500
   maxNextAge: 10
   waterQuality: 60
   fishType: 0
