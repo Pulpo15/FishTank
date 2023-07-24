@@ -796,16 +796,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3344552294942106622}
-  material:
-  - {fileID: 2100000, guid: a3e44fa7e8e309d4dade434066d9c002, type: 2}
-  - {fileID: 2100000, guid: d629f6da61dfcb840a2538a2faa76f0a, type: 2}
-  - {fileID: 2100000, guid: 95d6f6bb31051e2438147a2b63b324d8, type: 2}
-  - {fileID: 2100000, guid: fe5d68b07a6244d458b93499a8d47574, type: 2}
   mesh: {fileID: 3344552296554236166}
   minSpeed: 1.5
   maxSpeed: 2
   maxEatTime: 40
-  maxDeadTime: 500
+  maxDeadTime: 1000
   maxNextAge: 10
   waterQuality: 60
   fishType: 0

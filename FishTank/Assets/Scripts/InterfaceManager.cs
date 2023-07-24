@@ -17,10 +17,10 @@ public class InterfaceManager : MonoBehaviour {
         if(!FeedManager.instance.useFood) {
             FeedManager.instance.useFood = true;
             FishTankSelector.fishTankManager.useRemover = false;
+            FishTankSelector.fishTankManager.GetComponent<Collider>().enabled = true;
         }
         else if(FeedManager.instance.useFood) {
             FeedManager.instance.useFood = false;
-            FishTankSelector.fishTankManager.useRemover = true;
         }
     }
 
@@ -28,10 +28,11 @@ public class InterfaceManager : MonoBehaviour {
         if(!FishTankSelector.fishTankManager.useRemover) {
             FishTankSelector.fishTankManager.useRemover = true;
             FeedManager.instance.useFood = false;
+            FishTankSelector.fishTankManager.GetComponent<Collider>().enabled = false;
         }
         else if(FishTankSelector.fishTankManager.useRemover) {
             FishTankSelector.fishTankManager.useRemover = false;
-            FeedManager.instance.useFood = true;
+            FishTankSelector.fishTankManager.GetComponent<Collider>().enabled = true;
         }
     }
 

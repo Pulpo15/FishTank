@@ -14,7 +14,6 @@ public class FeedManager : MonoBehaviour {
     #endregion
 
     #region Private
-    Bounds bounds;
     private int foodId = 0;
     private int enumSize;
     #endregion
@@ -27,8 +26,10 @@ public class FeedManager : MonoBehaviour {
 
     // *** Instantiate food at mouse position *** //
     private Vector3 FoodInstantiate() {
+        List<Transform> fishTankBounds;
+
         // *** Get FishTank Bounds *** //
-        bounds = FishTankSelector.fishTankManager.GetFishTankBounds();
+        fishTankBounds = FishTankSelector.fishTankManager.GetFishTankBounds();
 
         Vector3 mousePos = Input.mousePosition;
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
@@ -41,8 +42,8 @@ public class FeedManager : MonoBehaviour {
         }
 
         // *** Instantiate food only in FishTank bounds *** //
-        if (objectPos.z > bounds.min.z && objectPos.z < bounds.max.z && 
-            objectPos.x > bounds.min.x && objectPos.x < bounds.max.x) {
+        if(objectPos.z > fishTankBounds[0].position.z && objectPos.z < fishTankBounds[1].position.z &&
+            objectPos.x > fishTankBounds[1].position.x && objectPos.x < fishTankBounds[0].position.x) {
 
             return objectPos;
         } else {

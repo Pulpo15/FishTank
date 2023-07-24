@@ -15,7 +15,8 @@ public class BreedManager : MonoBehaviour {
 
     public enum FishType {
         Piranha,
-        Clown
+        Clown,
+        Dolphin
     }
 
     // *** Couple structure with type *** //

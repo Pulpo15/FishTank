@@ -67,7 +67,7 @@ public class FishTankManager : MonoBehaviour {
     }
 
     // *** Returns Bounds of FishTank *** //
-    public Bounds GetFishTankBounds() {
+    public List<Transform> GetFishTankBounds() {
         List<Transform> fishTankBounds = new List<Transform>();
 
         // *** Get child GO Bounds in FishTank *** //
@@ -79,18 +79,7 @@ public class FishTankManager : MonoBehaviour {
             }
         }
 
-        Bounds bounds = new Bounds();
-
-        // *** Get defined vertex of FishTank *** //
-        for(int i = 0; i < fishTankBounds.Count; i++) {
-            bounds.Encapsulate(fishTankBounds[i].position);
-            //Debug.Log(fishTankBounds[i].position);
-            //Debug.Log(fishTankBounds[i].localPosition);
-        }
-
-        //Debug.Log($"3 Max z: {bounds.max.z}, Min z: {bounds.min.z}");
-
-        return bounds;
+        return fishTankBounds;
     }
 
     private void Start() {
@@ -140,7 +129,9 @@ public class FishTankManager : MonoBehaviour {
             Vector3 mousePos = Input.mousePosition;
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
+            // *** Raycast mouse position *** //
             if(Physics.Raycast(ray, out RaycastHit hit)) {
+                // *** Check if obect tag is a fish *** //
                 if(hit.collider.CompareTag("DefaultFish")) {
                     GameObject obj = hit.collider.gameObject;
                     FishMovement fish = obj.GetComponent<FishMovement>();

@@ -22,11 +22,26 @@ public class CameraManager : MonoBehaviour {
     private Vector3 smoothVelocity = Vector3.zero;
     private float smoothTime = 0.1f;
     private float distanceFromTarget = 15.0f;
-    #endregion 
+    #endregion
+
+#nullable enable
 
     // *** Move camera to delimited points *** //
-    private IEnumerator MoveCamera(int id) {
-        if(id < camPosition.Count) { // Check if id is valid
+    private IEnumerator MoveCamera(int id, Transform? target) {
+        if (target != null) {
+            while(transform.position != target.position) {
+                transform.position = Vector3.MoveTowards(transform.position, target.position,
+                    50 * Time.deltaTime);
+
+                // *** Check distance to avoid infinite loop *** //
+                float dist = Vector3.Distance(transform.position, target.position);
+                if(dist < 1f) 
+                    transform.position = target.position;
+
+                yield return 0; // Skip to next frame
+            }
+        }
+        else if(id < camPosition.Count) { // Check if id is valid
                                      // *** Using coroutine move camera every frame *** //
             while(transform.position != camPosition[id].position) {
                 transform.position = Vector3.MoveTowards(transform.position, camPosition[id].position,
@@ -34,9 +49,10 @@ public class CameraManager : MonoBehaviour {
 
                 // *** Check distance to avoid infinite loop *** //
                 float dist = Vector3.Distance(transform.position, camPosition[id].position);
-                if(dist < 1f) transform.position = camPosition[id].position;
-
-                transform.LookAt(FishTankSelector.fishTankManager.transform); // Aim camera to FishTank
+                if(dist < 1f) {
+                    transform.position = camPosition[id].position;
+                    transform.LookAt(FishTankSelector.fishTankManager.transform); // Aim camera to FishTank
+                }
 
                 yield return 0; // Skip to next frame
             }
@@ -50,7 +66,7 @@ public class CameraManager : MonoBehaviour {
         if(Input.GetMouseButton(1)) {
             
         } else {
-            StartCoroutine(MoveCamera(id));
+            StartCoroutine(MoveCamera(id, null));
         }
     }
 
@@ -67,28 +83,38 @@ public class CameraManager : MonoBehaviour {
         }
 
         // *** Set camera position to default *** //
-        //transform.position = camPosition[0].position;
-        //transform.rotation = camPosition[0].rotation;
-        StartCoroutine(MoveCamera(0));
+        StartCoroutine(MoveCamera(0, null));
 
         rotationY = -98f;
         currentRotation = new Vector3(0, rotationY, 0);
     }
     private void SetGeneralCamera() {
-        transform.position = generalPosition.position;
+
+        // *** Set camera position to default *** //
+        StartCoroutine(MoveCamera(0, generalPosition));
+
+        //transform.position = generalPosition.position;
         transform.rotation = generalPosition.rotation;
     }
 
     private void MoveCameraArroundFishtank() {
-        if(FishTankSelector.fishTankManager == null) return;
 
-        // *** Rotate camera using right click *** //
+        // *** FishTank not selected, reset position *** //
+        if(FishTankSelector.fishTankManager == null) {
+            if (rotationX != 0f || rotationY != 0f) {
+                rotationY = 0f;
+                rotationX = 0f;
+            }
+            return; 
+        }
+
+        // *** Rotate camera using middle click *** //
         if(Input.GetMouseButton(2) && FishTankSelector.fishTankManager != null) {
             // *** Unlock mouse *** //
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            //// *** Assign position to mouse axis *** //
+            // *** Assign position to mouse axis *** //
             float mouseX = Input.GetAxis("Mouse X") * Time.deltaTime * speedH * 100;
             float mouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * speedH * 100;
 
@@ -96,13 +122,18 @@ public class CameraManager : MonoBehaviour {
             if(invertV) mouseY *= -1;
             if(invertH) mouseX *= -1;
 
+            // *** Add rotation plus mouse position *** //
             rotationY += mouseX;
             rotationX += mouseY;
 
+            // *** Clamp camera position to limit movement *** //
             rotationX = Mathf.Clamp(rotationX, -10f, 60f);
+            rotationY = Mathf.Clamp(rotationY, -120f, -60f);
 
+            // *** Current frame rotation to assign *** //
             Vector3 nextRotation = new Vector3(rotationX, rotationY);
 
+            // *** Assign desired rotation with smooth *** //
             currentRotation = Vector3.SmoothDamp(currentRotation, nextRotation, ref smoothVelocity, smoothTime);
             transform.localEulerAngles = currentRotation;
 
@@ -114,20 +145,18 @@ public class CameraManager : MonoBehaviour {
         }
     }
 
-    private void Start() {
-        // *** Subscribe event *** //
-        GameEvents.instance.onCamKeyPressed += ExecuteMoveCamera;
-        GameEvents.instance.onFishTankUpdated += SetFishtankCamera;
-        GameEvents.instance.onFishTankRemoved += SetGeneralCamera;
-    }
-
-    private void Update() {
-
-        MoveCameraArroundFishtank();
+    private void Zoom() {
+        // *** FishTank not selected, reset Zoom *** //
+        if(FishTankSelector.fishTankManager == null) {
+            if(distanceFromTarget != 15f) {
+                distanceFromTarget = 15f;
+            }
+            return;
+        }
 
         // *** Zoom OUT/IN *** //
         if(Input.GetAxisRaw("Mouse ScrollWheel") > 0) {
-            if(distanceFromTarget > 1f) { // Clamp Zoom
+            if(distanceFromTarget > 10f) { // Clamp Zoom
                 transform.position += transform.forward * Time.deltaTime * speedH * 100;
                 distanceFromTarget -= Time.deltaTime * speedH * 100;
             }
@@ -137,5 +166,22 @@ public class CameraManager : MonoBehaviour {
                 distanceFromTarget += Time.deltaTime * speedH * 100;
             }
         }
+    }
+
+    private void Start() {
+        // *** Subscribe event *** //
+        GameEvents.instance.onCamKeyPressed += ExecuteMoveCamera;
+        GameEvents.instance.onFishTankUpdated += SetFishtankCamera;
+        GameEvents.instance.onFishTankRemoved += SetGeneralCamera;
+
+        SetGeneralCamera();
+    }
+
+    private void Update() {
+
+        MoveCameraArroundFishtank();
+
+        Zoom();
+
     }
 }

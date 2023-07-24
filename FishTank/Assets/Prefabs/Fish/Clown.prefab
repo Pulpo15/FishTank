@@ -48,16 +48,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 7912152229132284895}
-  material:
-  - {fileID: 2100000, guid: b53e566adf7b8d3478f0055eaa944d89, type: 2}
-  - {fileID: 2100000, guid: 59a64ef9ab77d154f8fe13469e3219e5, type: 2}
-  - {fileID: 2100000, guid: 15c4e644be701fc43a324b771c926868, type: 2}
-  - {fileID: 2100000, guid: 09281b9afd3d8f14d848a8fa67448e51, type: 2}
   mesh: {fileID: 7912152229179699284}
   minSpeed: 1.5
   maxSpeed: 2
   maxEatTime: 40
-  maxDeadTime: 60
+  maxDeadTime: 1000
   maxNextAge: 10
   waterQuality: 90
   fishType: 1
@@ -593,15 +588,15 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.014328798
+  - screenRelativeHeight: 0.14835355
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7912152229179699286}
-  - screenRelativeHeight: 0.004447846
+  - screenRelativeHeight: 0.14835355
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7912152229184236720}
-  - screenRelativeHeight: 0.00027551025
+  - screenRelativeHeight: 0.14835355
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7912152228330361058}

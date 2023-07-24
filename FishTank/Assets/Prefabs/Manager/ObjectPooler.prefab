@@ -56,7 +56,10 @@ MonoBehaviour:
     size: 50
   - tag: Piranha
     prefab: {fileID: 5905104734095047765, guid: c28fa2f3c52764644a282948045e36e0, type: 3}
-    size: 30
+    size: 100
   - tag: Clown
     prefab: {fileID: 5905104734095047765, guid: a37abcfc3d929f5459e01598280a2d55, type: 3}
-    size: 30
+    size: 100
+  - tag: Dolphin
+    prefab: {fileID: 5206078949442079778, guid: a56770143ffcc86449c9dd7a6433b24a, type: 3}
+    size: 100

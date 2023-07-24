@@ -9,8 +9,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
     #region Public
     public Animator animator;
-    public List<Material> material;
-    public GameObject mesh;
     public float minSpeed, maxSpeed;
     public float maxEatTime;
     public float maxDeadTime = 30;
@@ -26,17 +24,16 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
     #region Private
     private FishTankManager fishTankManager;
-    private Bounds bounds;
     private Vector3 targetPosition;
     private int nextAge = 0;
     private float randomSpeed = 2;
     private float eatTime;
-    private float deadTime;
     private bool updateTarget;
     private bool canEat = false;
     private bool canBreed = true;
     private GameObject foodTarget;
     private bool dead = false;
+    private List<Transform> fishTankBounds;
     public bool GetDead() { return dead; }
     int obstacleLayer;
     #endregion
@@ -52,10 +49,10 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         fishTankManager = FishTankSelector.fishTankManager;
 
         // *** Get FishTank Bounds *** //
-        bounds = fishTankManager.GetFishTankBounds();
+        fishTankBounds = fishTankManager.GetFishTankBounds();
 
         // *** Check assigned bounds *** //
-        if(bounds.size == Vector3.zero) {
+        if(fishTankBounds.Count < 1) {
             Debug.LogWarning("Fish Tank Bounds Unassigned : " + gameObject.name);
             gameObject.SetActive(false);
             return;
@@ -77,11 +74,9 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         GetTargetPosition(null);
     }
 
-    // *** Set designed age and it's graphics *** //
+    // *** Set designed age *** //
     public void SetAge(Age _age) { 
         age = _age;
-        // *** Set material by Age *** //
-        mesh.GetComponent<Renderer>().material = material[(int)age];
     }
 
     // *** Search closest food to fish *** //
@@ -136,21 +131,17 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         }
 
         #region Debug bounds
-        //Debug.Log($"1 Max x: {bounds.max.x}, Min x: {bounds.min.x}");
-        //Debug.Log($"2 Max y: {bounds.max.y}, Min y: {bounds.min.y}");
-        //Debug.Log($"3 Max z: {bounds.max.z}, Min z: {bounds.min.z}");
+        //Debug.Log($"1 Max x: {fishTankBounds[0].position.x}, Min x: {fishTankBounds[1].position.x}");
+        //Debug.Log($"2 Max y: {fishTankBounds[1].position.y}, Min y: {fishTankBounds[0].position.y}");
+        //Debug.Log($"3 Max z: {fishTankBounds[1].position.z}, Min z: {fishTankBounds[0].position.z}");
         #endregion
 
         // *** Get size of FishTank using defined vertex *** //
-        float x = Random.Range(bounds.min.x, bounds.max.x);
-        float y = Random.Range(bounds.min.y, bounds.max.y);
-        float z = Random.Range(bounds.min.z, bounds.max.z);
+        float x = Random.Range(fishTankBounds[1].position.x, fishTankBounds[0].position.x);
+        float y = Random.Range(fishTankBounds[0].position.y, fishTankBounds[1].position.y);
+        float z = Random.Range(fishTankBounds[0].position.z, fishTankBounds[1].position.z);
 
         targetPosition = new Vector3(x, y, z);
-
-        //Debug.Log(z);
-
-        //Instantiate(icon, targetPosition, Quaternion.identity);
     }
 
     // *** If food is correct & can breed set target *** //
@@ -210,9 +201,14 @@ public class FishMovement : MonoBehaviour, IPooledObject {
             }
             // *** If fish has a target move towards it with random speed between assigned in editor *** //
             else {
+                // *** Move fish to position *** //
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition,
                     randomSpeed * Time.deltaTime);
-                transform.LookAt(targetPosition);
+
+                // *** Rotate fish *** //
+                Vector3 dir = targetPosition - transform.position;
+                Quaternion rot = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rot, 5f * Time.deltaTime);
             }
             #endregion
 
@@ -256,7 +252,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         if(dead) {
             eatTime += Time.deltaTime;
             if(eatTime>= 5f) {
-                FishTankSelector.fishTankManager.UpdateWaterQuality(-10);
+                fishTankManager.UpdateWaterQuality(-10);
                 eatTime = 0f;
             }
         }
@@ -292,8 +288,6 @@ public class FishMovement : MonoBehaviour, IPooledObject {
                 for(int i = 0; i < values.Length; i++) {
                     if(age == (Age)values.GetValue(i)) {
                         age = (Age)values.GetValue(i + 1); // Set next Age
-                        // *** Set material by Age *** //
-                        mesh.GetComponent<Renderer>().material = material[(int)age];
                         return;
                     }   
                 }
