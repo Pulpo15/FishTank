@@ -27,31 +27,23 @@ public class CameraManager : MonoBehaviour {
 #nullable enable
 
     // *** Move camera to delimited points *** //
-    private IEnumerator MoveCamera(int id, Transform? target) {
+    private IEnumerator MoveCamera(Transform target) {
+        GameEvents.instance.moving = true;
         if (target != null) {
             while(transform.position != target.position) {
+                // *** Move Camera *** //
                 transform.position = Vector3.MoveTowards(transform.position, target.position,
                     50 * Time.deltaTime);
 
+                // *** Rotate Camera *** //
+                transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, 5f * Time.deltaTime);
+
                 // *** Check distance to avoid infinite loop *** //
                 float dist = Vector3.Distance(transform.position, target.position);
-                if(dist < 1f) 
+                if(dist < 0.3f) {
+                    // *** Set final position & rotation *** //
                     transform.position = target.position;
-
-                yield return 0; // Skip to next frame
-            }
-        }
-        else if(id < camPosition.Count) { // Check if id is valid
-                                     // *** Using coroutine move camera every frame *** //
-            while(transform.position != camPosition[id].position) {
-                transform.position = Vector3.MoveTowards(transform.position, camPosition[id].position,
-                    50 * Time.deltaTime);
-
-                // *** Check distance to avoid infinite loop *** //
-                float dist = Vector3.Distance(transform.position, camPosition[id].position);
-                if(dist < 1f) {
-                    transform.position = camPosition[id].position;
-                    transform.LookAt(FishTankSelector.fishTankManager.transform); // Aim camera to FishTank
+                    transform.rotation = target.rotation;
                 }
 
                 yield return 0; // Skip to next frame
@@ -66,7 +58,7 @@ public class CameraManager : MonoBehaviour {
         if(Input.GetMouseButton(1)) {
             
         } else {
-            StartCoroutine(MoveCamera(id, null));
+            StartCoroutine(MoveCamera(camPosition[id]));
         }
     }
 
@@ -82,19 +74,23 @@ public class CameraManager : MonoBehaviour {
             }
         }
 
+        StopAllCoroutines();
+
         // *** Set camera position to default *** //
-        StartCoroutine(MoveCamera(0, null));
+        StartCoroutine(MoveCamera(camPosition[0]));
 
         rotationY = -98f;
         currentRotation = new Vector3(0, rotationY, 0);
     }
     private void SetGeneralCamera() {
 
+        StopAllCoroutines();
+
         // *** Set camera position to default *** //
-        StartCoroutine(MoveCamera(0, generalPosition));
+        StartCoroutine(MoveCamera(generalPosition));
 
         //transform.position = generalPosition.position;
-        transform.rotation = generalPosition.rotation;
+        //transform.rotation = generalPosition.rotation;
     }
 
     private void MoveCameraArroundFishtank() {
@@ -109,7 +105,7 @@ public class CameraManager : MonoBehaviour {
         }
 
         // *** Rotate camera using middle click *** //
-        if(Input.GetMouseButton(2) && FishTankSelector.fishTankManager != null) {
+        if(Input.GetMouseButton(2) && FishTankSelector.fishTankManager != null && !GameEvents.instance.moving) {
             // *** Unlock mouse *** //
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -129,6 +125,7 @@ public class CameraManager : MonoBehaviour {
             // *** Clamp camera position to limit movement *** //
             rotationX = Mathf.Clamp(rotationX, -10f, 60f);
             rotationY = Mathf.Clamp(rotationY, -120f, -60f);
+            //Debug.Log(rotationY);
 
             // *** Current frame rotation to assign *** //
             Vector3 nextRotation = new Vector3(rotationX, rotationY);
@@ -147,7 +144,7 @@ public class CameraManager : MonoBehaviour {
 
     private void Zoom() {
         // *** FishTank not selected, reset Zoom *** //
-        if(FishTankSelector.fishTankManager == null) {
+        if(FishTankSelector.fishTankManager == null || GameEvents.instance.moving) {
             if(distanceFromTarget != 15f) {
                 distanceFromTarget = 15f;
             }

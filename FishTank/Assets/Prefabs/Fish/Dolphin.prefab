@@ -724,9 +724,9 @@ GameObject:
   - component: {fileID: 1315250968467604998}
   - component: {fileID: 7762251178466793023}
   - component: {fileID: 5581713484251224696}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Dolphin
-  m_TagString: Untagged
+  m_TagString: DefaultFish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -763,7 +763,7 @@ MonoBehaviour:
   minSpeed: 3
   maxSpeed: 3.5
   maxEatTime: 100
-  maxDeadTime: 1000
+  maxDeadTime: 1
   maxNextAge: 10
   waterQuality: 10
   fishType: 2

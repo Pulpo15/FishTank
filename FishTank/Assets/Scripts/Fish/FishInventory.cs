@@ -49,9 +49,12 @@ public class FishInventory : MonoBehaviour {
         // *** Add fish to Inventory *** //
         fishList.Add(fishData);
         // *** Add fish to FishTank list *** //
-        FishTankSelector.fishTankManager.fishInTank.Add(newFish);
-
-        //Debug.Log(fishList.Count);
+        for(int i = 0; i < FishTankSelector.fishTankManager.fishInTank.Count; i++) {
+            if(!FishTankSelector.fishTankManager.fishInTank[i]) {
+                FishTankSelector.fishTankManager.fishInTank[i] = newFish;
+                break;
+            }
+        }
     }
 
     public void KillFish(GameObject fish) {

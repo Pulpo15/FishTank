@@ -207,8 +207,10 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
                 // *** Rotate fish *** //
                 Vector3 dir = targetPosition - transform.position;
-                Quaternion rot = Quaternion.LookRotation(dir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rot, 5f * Time.deltaTime);
+                if (dir != Vector3.zero) {
+                    Quaternion rot = Quaternion.LookRotation(dir);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, rot, 5f * Time.deltaTime);
+                }
             }
             #endregion
 
@@ -298,7 +300,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         } 
         // *** Collision with partner *** //
         if(other.gameObject == partner) {
-            canBreed = false;
+            canBreed = true;
             partner = null;
 
             animator.Play("Eyes_Happy"); // Reset animation

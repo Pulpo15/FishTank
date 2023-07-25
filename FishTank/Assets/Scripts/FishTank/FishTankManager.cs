@@ -9,7 +9,9 @@ public class FishTankManager : MonoBehaviour {
     #endregion
 
     #region Public
+    [HideInInspector]
     public bool useRemover;
+    public bool BreedFishTank;
     public int maxWaterQuality = 100;
     public List<GameObject> fishInTank;
     #endregion
@@ -19,6 +21,7 @@ public class FishTankManager : MonoBehaviour {
     private int fishId = 0;
     private int enumSize;
     private int waterQuality;
+    private int fishSize = 0;
     #endregion
 
     // *** Update FishTank Water quality & check if fish can be alive in it *** //
@@ -28,7 +31,9 @@ public class FishTankManager : MonoBehaviour {
         if(waterQuality < 0) waterQuality = 0;
 
         foreach(GameObject fish in fishInTank) {
-            fish.GetComponent<FishMovement>().CheckWaterQuality(waterQuality);
+            if(fish != null) {
+                fish.GetComponent<FishMovement>().CheckWaterQuality(waterQuality);
+            }
         }
     }
 
@@ -95,6 +100,7 @@ public class FishTankManager : MonoBehaviour {
         // *** If FishTank is not selected don't Update *** //;
         if(FishTankSelector.fishTankManager != this) return;
 
+        #region SelectFish
         // *** Change selected fish type *** //
         if(Input.GetMouseButtonDown(4) && fishId < enumSize) {
             fishId++;
@@ -104,26 +110,38 @@ public class FishTankManager : MonoBehaviour {
             fishId--;
             ModifyFoodType(fishId);
         }
+        #endregion
 
+        #region SpawnFish
         // *** Spawn selected fish *** //
         if(Input.GetKeyDown(KeyCode.RightShift)) {
-            FishInventory.FishData fishData = new FishInventory.FishData();
+            if(fishSize < fishInTank.Count) {
+                FishInventory.FishData fishData = new FishInventory.FishData();
 
-            fishData.type = fishType;
-            fishData.age = FishMovement.Age.Adult;
-            fishData.female = true;
+                fishData.type = fishType;
+                fishData.age = FishMovement.Age.Adult;
+                fishData.female = true;
 
-            FishInventory.instance.SpawnFish(fishData, false);
-        } else if(Input.GetKeyDown(KeyCode.RightControl)) {
-            FishInventory.FishData fishData = new FishInventory.FishData();
+                FishInventory.instance.SpawnFish(fishData, false);
 
-            fishData.type = fishType;
-            fishData.age = FishMovement.Age.Adult;
-            fishData.female = false;
+                fishSize++;
+            } else GameEvents.instance.MessageRecieved("FishTank is Full");
 
-            FishInventory.instance.SpawnFish(fishData, false);
-        }
+        } else if(Input.GetKeyDown(KeyCode.RightControl) && fishSize < fishInTank.Count) {
+            if(fishSize < fishInTank.Count) {
+                FishInventory.FishData fishData = new FishInventory.FishData();
 
+                fishData.type = fishType;
+                fishData.age = FishMovement.Age.Adult;
+                fishData.female = false;
+
+                FishInventory.instance.SpawnFish(fishData, false);
+                fishSize++;
+            } else GameEvents.instance.MessageRecieved("FishTank is Full");
+        } 
+        #endregion
+
+        #region RemoveDeadFish
         // *** Remove dead fish *** //
         if(Input.GetMouseButton(0) && Cursor.visible && useRemover) {
             Vector3 mousePos = Input.mousePosition;
@@ -144,5 +162,6 @@ public class FishTankManager : MonoBehaviour {
                 GameEvents.instance.MessageRecieved("Select a fish");
             }
         }
+        #endregion
     }
 }

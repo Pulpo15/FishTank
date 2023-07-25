@@ -82,7 +82,6 @@ public class InterfaceManager : MonoBehaviour {
                 for(int i = 0; i < FishInventory.instance.fishList.Count; i++) {
 
                     Sprite sprite = Resources.Load<Sprite>("FishPng/" + FishInventory.instance.fishList[i].type);
-                    Debug.Log(sprite);
                     buttonsList[i].image.sprite = sprite;
                     buttonsList[i].gameObject.SetActive(true);
                 }

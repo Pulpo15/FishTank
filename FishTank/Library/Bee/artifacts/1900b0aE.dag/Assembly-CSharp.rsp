@@ -356,6 +356,7 @@
 "Assets/Materials/Junk/Assets/MaskCamera.cs"
 "Assets/Quirky Series Ultimate/_Scripts/Demo.cs"
 "Assets/Scripts/CameraManager.cs"
+"Assets/Scripts/DayManager.cs"
 "Assets/Scripts/Fish/BreedManager.cs"
 "Assets/Scripts/Fish/FeedManager.cs"
 "Assets/Scripts/Fish/FishInventory.cs"

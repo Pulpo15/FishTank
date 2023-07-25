@@ -53,7 +53,7 @@ public class FeedManager : MonoBehaviour {
     }
 
     // *** Change selected food type *** //
-    private void ModifyFoodType(int id) {
+    public void ModifyFoodType(int id) {
         // *** Get size of enum *** //
         Array values = Enum.GetValues(typeof(Food));
 
