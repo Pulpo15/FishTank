@@ -10,6 +10,7 @@ public class FishInventory : MonoBehaviour {
         public BreedManager.FishType type;
         public bool female;
         public GameObject instance;
+        public string fishTankName;
     }
 
     // *** Inventory *** //
@@ -22,13 +23,28 @@ public class FishInventory : MonoBehaviour {
     }
 
     public void SpawnFish(FishData fishData, bool randomSex) {
-        GameObject newFish = ObjectPooler.instance.SpawnFromPool(fishData.type.ToString(), 
-            FishTankSelector.fishTankManager.transform.position, Quaternion.identity);
+
+        FishTankManager fishTank;
+
+        if (fishData.fishTankName == null) {
+            fishTank = FishTankSelector.fishTankManager;
+            fishData.fishTankName = FishTankSelector.fishTankManager.name;
+        } else {
+            fishTank = GameObject.Find(fishData.fishTankName).GetComponent<FishTankManager>();
+        }
+
+        //Debug.Log(position);
+
+        GameObject newFish = ObjectPooler.instance.SpawnFromPool(fishData.type.ToString(),
+        fishTank.transform.position, Quaternion.identity);
 
         // *** Assign fish object to save in list  *** //
         fishData.instance = newFish;
 
         FishMovement fishMovement = newFish.GetComponent<FishMovement>();
+
+        if(fishData.fishTankName != null)
+            fishMovement.SaveSpawn(fishTank);
 
         // *** Set fish Age *** //
         fishMovement.SetAge(fishData.age);
@@ -49,9 +65,9 @@ public class FishInventory : MonoBehaviour {
         // *** Add fish to Inventory *** //
         fishList.Add(fishData);
         // *** Add fish to FishTank list *** //
-        for(int i = 0; i < FishTankSelector.fishTankManager.fishInTank.Count; i++) {
-            if(!FishTankSelector.fishTankManager.fishInTank[i]) {
-                FishTankSelector.fishTankManager.fishInTank[i] = newFish;
+        for(int i = 0; i < fishTank.fishInTank.Count; i++) {
+            if(!fishTank.fishInTank[i]) {
+                fishTank.fishInTank[i] = newFish;
                 break;
             }
         }
@@ -66,5 +82,26 @@ public class FishInventory : MonoBehaviour {
         // *** Remove fish in FishTank list *** //
         FishTankSelector.fishTankManager.fishInTank.Remove(fish);
         fish.SetActive(false);
+    }
+
+    void DisabelAllFish() {
+        for(int i = 0; i < fishList.Count; i++) {
+            fishList[i].instance.SetActive(false);
+        }
+    }
+
+    void EnableAllFish() {
+        for(int i = 0; i < fishList.Count; i++) {
+            fishList[i].instance.SetActive(true);
+        }
+    }
+
+    private void Update() {
+        if(Input.GetKeyDown(KeyCode.L)) {
+            EnableAllFish();
+        }
+        if(Input.GetKeyDown(KeyCode.R)) {
+            DisabelAllFish();
+        }
     }
 }

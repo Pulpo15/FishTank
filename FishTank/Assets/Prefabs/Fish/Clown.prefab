@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 7912152229132284895}
-  mesh: {fileID: 7912152229179699284}
   minSpeed: 1.5
   maxSpeed: 2
   maxEatTime: 40

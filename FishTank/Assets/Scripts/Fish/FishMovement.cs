@@ -34,9 +34,11 @@ public class FishMovement : MonoBehaviour, IPooledObject {
     private GameObject foodTarget;
     private bool dead = false;
     private List<Transform> fishTankBounds;
-    public bool GetDead() { return dead; }
-    int obstacleLayer;
+    private int obstacleLayer;
     #endregion
+
+    public bool GetDead() { return dead; }
+    public void SetFishTank(FishTankManager _manager) { fishTankManager = _manager; }
 
     public enum Age {
         Baby,
@@ -45,9 +47,7 @@ public class FishMovement : MonoBehaviour, IPooledObject {
         Elder
     }
 
-    public void OnObjectSpawn() {
-        fishTankManager = FishTankSelector.fishTankManager;
-
+    private void SetUp() {
         // *** Get FishTank Bounds *** //
         fishTankBounds = fishTankManager.GetFishTankBounds();
 
@@ -72,6 +72,19 @@ public class FishMovement : MonoBehaviour, IPooledObject {
 
         // *** Set fish target at the start *** //
         GetTargetPosition(null);
+    }
+
+    public void SaveSpawn(FishTankManager fishTank) {
+        fishTankManager = fishTank;
+        SetUp();
+    }
+
+    // *** Interface called at ObjectPooler spawn *** //
+    public void OnObjectSpawn() {
+        if (FishTankSelector.fishTankManager != null) {
+            fishTankManager = FishTankSelector.fishTankManager;
+            SetUp();
+        }
     }
 
     // *** Set designed age *** //
