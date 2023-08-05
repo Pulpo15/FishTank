@@ -13,7 +13,6 @@ public class DayManager : MonoBehaviour {
                     if(breedFishTank.fishInTank[i] == FishInventory.instance.fishList[j].instance) {
                         GameEvents.instance.SearchCouple(FishInventory.instance.fishList[j].type, breedFishTank.fishInTank[i]);
                     }
-
                 }
             }
         }

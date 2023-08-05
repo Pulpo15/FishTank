@@ -371,6 +371,7 @@
 "Assets/Scripts/ObjectPooler/IPooledObject.cs"
 "Assets/Scripts/ObjectPooler/ObjectPooler.cs"
 "Assets/Scripts/SaveManager.cs"
+"Assets/Scripts/StoreManager.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark01_UGUI.cs"
 "Assets/TextMesh Pro/Examples & Extras/Scripts/Benchmark02.cs"

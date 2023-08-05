@@ -7,7 +7,9 @@ public class FishTankSelector : MonoBehaviour {
     public static FishTankManager fishTankManager;
 
     private void Update() {
-        // *** Remove dead fish *** //
+        if(Time.timeScale == 0f) return;
+
+        // *** Select FishTank *** //
         if(Input.GetMouseButton(0) && Cursor.visible && fishTankManager == null) {
             Vector3 mousePos = Input.mousePosition;
             Ray ray = Camera.main.ScreenPointToRay(mousePos);

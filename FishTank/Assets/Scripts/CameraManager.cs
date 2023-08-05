@@ -88,9 +88,6 @@ public class CameraManager : MonoBehaviour {
 
         // *** Set camera position to default *** //
         StartCoroutine(MoveCamera(generalPosition));
-
-        //transform.position = generalPosition.position;
-        //transform.rotation = generalPosition.rotation;
     }
 
     private void MoveCameraArroundFishtank() {

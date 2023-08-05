@@ -33,8 +33,6 @@ public class FishInventory : MonoBehaviour {
             fishTank = GameObject.Find(fishData.fishTankName).GetComponent<FishTankManager>();
         }
 
-        //Debug.Log(position);
-
         GameObject newFish = ObjectPooler.instance.SpawnFromPool(fishData.type.ToString(),
         fishTank.transform.position, Quaternion.identity);
 
