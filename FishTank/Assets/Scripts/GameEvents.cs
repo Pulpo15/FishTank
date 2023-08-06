@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameEvents : MonoBehaviour {
 
@@ -89,6 +90,14 @@ public class GameEvents : MonoBehaviour {
     public void BreedNewFish(BreedManager.FishType fish, Transform transform) {
         if(onBreedNewFish != null) {
             onBreedNewFish(fish, transform);
+        }
+    }
+
+    // *** Add type to salable fishes *** //
+    public event Action<Image> onFishButtonClicked;
+    public void FishButtonClicked(Image image) {
+        if(onFishButtonClicked != null) {
+            onFishButtonClicked(image);     
         }
     }
 

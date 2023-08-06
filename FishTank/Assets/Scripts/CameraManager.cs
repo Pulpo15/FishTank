@@ -151,13 +151,13 @@ public class CameraManager : MonoBehaviour {
         // *** Zoom OUT/IN *** //
         if(Input.GetAxisRaw("Mouse ScrollWheel") > 0) {
             if(distanceFromTarget > 10f) { // Clamp Zoom
-                transform.position += transform.forward * Time.deltaTime * speedH * 100;
-                distanceFromTarget -= Time.deltaTime * speedH * 100;
+                transform.position += transform.forward * Time.deltaTime * speedH * 5f;
+                distanceFromTarget -= Time.deltaTime * speedH * 5f;
             }
         } else if(Input.GetAxisRaw("Mouse ScrollWheel") < 0) {
             if(distanceFromTarget < 40f) { // Clamp Zoom
-                transform.position -= transform.forward * Time.deltaTime * speedH * 100;
-                distanceFromTarget += Time.deltaTime * speedH * 100;
+                transform.position -= transform.forward * Time.deltaTime * speedH * 5f;
+                distanceFromTarget += Time.deltaTime * speedH * 5f;
             }
         }
     }

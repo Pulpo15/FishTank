@@ -25,9 +25,26 @@ public class StoreManager : MonoBehaviour {
         orderList.Add(order);
     }
 
-    public void SetFishStore(Image image) {
+    private void SetFishStore(Image image) {
         string type = image.sprite.name;
 
-        Debug.Log(type);
+        BreedManager.FishType fishType = (BreedManager.FishType)System.Enum.Parse(typeof(BreedManager.FishType), type);
+
+        for(int i = 0; i < fishList.Count; i++) {
+            if(fishList[i].type == fishType) return;
+        }
+
+        for(int i = 0; i < FishInventory.instance.fishList.Count; i++) {
+            if(FishInventory.instance.fishList[i].type == fishType) {
+                fishList.Add(FishInventory.instance.fishList[i]);
+                FishInventory.instance.fishList.Remove(FishInventory.instance.fishList[i]);
+                Debug.Log(FishInventory.instance.fishList[i].female);
+                Debug.Log(FishInventory.instance.fishList[i].fishTankName);
+            }
+        }
+    }
+
+    private void Start() {
+        GameEvents.instance.onFishButtonClicked += SetFishStore;
     }
 }

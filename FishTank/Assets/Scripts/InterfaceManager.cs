@@ -10,16 +10,22 @@ public class InterfaceManager : MonoBehaviour {
     public GameObject canvas;
     [Header("Canvas Zones")]
     public GameObject storeInventory;
+    public GameObject typeSelector;
     public GameObject inventory;
     public GameObject foodInventory;
     public GameObject maintenance;
     [Header("Inner Objects")]
-    public Transform buttonsZone; // Object to assign fish button images
+    public Transform buttonsZone; // Object to assign fish button images for inventory
+    public Transform storeButtonsZone; // Object to assign fish buttons image for store
+    public Transform typeButtonsZone; // Object to assign buttons image for type store
 
-    public InterfaceManager instance;
+    static public InterfaceManager instance;
 
     private List<Button> buttonsList;
+    private List<Button> storeButtonList;
+    private List<Button> typeButtonList;
 
+    #region Maintenance
     public void UseFood() {
         if(!FeedManager.instance.useFood) {
             FeedManager.instance.useFood = true;
@@ -42,20 +48,56 @@ public class InterfaceManager : MonoBehaviour {
             FishTankSelector.fishTankManager.GetComponent<Collider>().enabled = true;
         }
     }
+    #endregion
 
+    #region Store
+    public void ActiveTypeSelector() {
+        typeSelector.SetActive(true);
 
+        List<BreedManager.FishType> fishTypes = new List<BreedManager.FishType>();
+
+        for(int i = 0; i < FishInventory.instance.fishList.Count; i++) {
+            if(!fishTypes.Contains(FishInventory.instance.fishList[i].type)) {
+                fishTypes.Add(FishInventory.instance.fishList[i].type);
+            }
+        }
+
+        for(int i = 0; i < fishTypes.Count; i++) {
+            Sprite sprite = Resources.Load<Sprite>("FishPng/" + fishTypes[i]);
+            typeButtonList[i].image.sprite = sprite;
+            typeButtonList[i].gameObject.SetActive(true);
+        }
+
+    } 
+
+    private void SetFishStore(Image image) {
+        typeSelector.SetActive(false);
+
+        for(int i = 0; i < storeButtonList.Count; i++) {
+            if(!storeButtonList[i].gameObject.activeSelf) {
+                Sprite sprite = Resources.Load<Sprite>("FishPng/" + image.sprite.name);
+                storeButtonList[i-1].image.sprite = sprite;
+                storeButtonList[i].gameObject.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    #endregion
 
     #region ActiveZones
     public void StoreInventory() {
         storeInventory.SetActive(true);
         inventory.SetActive(false);
         foodInventory.SetActive(false);
+
+        storeButtonList[0].gameObject.SetActive(true);
     }
     public void Inventory() {
         storeInventory.SetActive(false);
         inventory.SetActive(true);
         foodInventory.SetActive(false);
-        Debug.Log(FishInventory.instance.fishList.Count);
+
         for(int i = 0; i < FishInventory.instance.fishList.Count; i++) {
 
             Sprite sprite = Resources.Load<Sprite>("FishPng/" + FishInventory.instance.fishList[i].type);
@@ -92,7 +134,9 @@ public class InterfaceManager : MonoBehaviour {
     private void Start() {
         GameEvents.instance.onFishTankUpdated += SetFishTankCanvas;
         GameEvents.instance.onFishTankRemoved += RemoveFishTankCanvas;
+        GameEvents.instance.onFishButtonClicked += SetFishStore;
 
+        // *** Add Inventory buttons to list to change sprite *** //
         buttonsList = new List<Button>();
 
         for(int i = 0; i < buttonsZone.childCount; i++) {
@@ -102,6 +146,35 @@ public class InterfaceManager : MonoBehaviour {
                 Button button = horizontalZone.GetChild(j).GetComponent<Button>();
                 button.GetComponentInChildren<TextMeshProUGUI>().text = "";
                 buttonsList.Add(button);
+                button.gameObject.SetActive(false);
+            }
+        }
+
+        // *** Add store buttons to list to change sprite *** //
+        storeButtonList = new List<Button>();
+
+        for(int j = 0; j < storeButtonsZone.childCount; j++) {
+            Button button = storeButtonsZone.GetChild(j).GetComponent<Button>();
+            button.GetComponentInChildren<TextMeshProUGUI>().text = "";
+            storeButtonList.Add(button);
+            button.gameObject.SetActive(false);
+        }
+
+        for(int i = 0; i < storeButtonsZone.childCount; i++) {
+            Transform horizontalZone = storeButtonsZone.GetChild(i).transform;
+
+        }
+
+        // *** Add type selector buttons to list to change sprite *** //
+        typeButtonList = new List<Button>();
+
+        for(int i = 0; i < typeButtonsZone.childCount; i++) {
+            Transform horizontalZone = typeButtonsZone.GetChild(i).transform;
+
+            for(int j = 0; j < horizontalZone.childCount; j++) {
+                Button button = horizontalZone.GetChild(j).GetComponent<Button>();
+                button.GetComponentInChildren<TextMeshProUGUI>().text = "";
+                typeButtonList.Add(button);
                 button.gameObject.SetActive(false);
             }
         }
